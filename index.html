@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SZN Sprinters — Private Group Transportation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080808;
+  --bg-card: #111111;
+  --bg-alt: #0e0e0e;
+  --text: #f0f0f0;
+  --text-muted: #787878;
+  --text-dim: #444;
+  --accent: #c8a96e;
+  --accent-dark: #a88a52;
+  --border: #252525;
+  --border-light: #323232;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --radius: 3px;
+  --transition: 0.22s ease;
+  --transition-slow: 0.45s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:16px;line-height:1.65;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2.5rem;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,0);backdrop-filter:blur(0px);transition:background 0.35s ease,backdrop-filter 0.35s ease;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(8,8,8,0.97);backdrop-filter:blur(12px);border-bottom-color:var(--border)}
+.nav-logo{font-family:var(--font-display);font-size:1.55rem;letter-spacing:0.12em;color:#fff;display:flex;align-items:center;gap:0.6rem}
+.nav-logo span{color:var(--accent)}
+.nav-logo-img{width:38px;height:38px;object-fit:contain;border-radius:50%;flex-shrink:0}
+.nav-links{display:flex;gap:2.2rem;align-items:center}
+.nav-links a{font-size:0.72rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(240,240,240,0.7);transition:color var(--transition)}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:var(--accent);color:#080808;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:0.6rem 1.4rem;border-radius:var(--radius);transition:background var(--transition),transform var(--transition)}
+.nav-cta:hover{background:var(--accent-dark);transform:translateY(-1px)}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.nav-hamburger span{width:24px;height:1.5px;background:#fff;display:block;transition:all 0.3s ease}
+.mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;bottom:0;background:rgba(8,8,8,0.98);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2rem;backdrop-filter:blur(20px)}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:var(--font-display);font-size:2.2rem;letter-spacing:0.1em;color:rgba(240,240,240,0.8);transition:color var(--transition)}
+.mobile-menu a:hover{color:#fff}
+.mobile-menu .m-cta{background:var(--accent);color:#080808;font-size:1rem;font-weight:600;letter-spacing:0.14em;padding:0.9rem 2.5rem;border-radius:var(--radius);margin-top:1rem}
+
+/* HERO */
+.hero{height:100vh;min-height:620px;position:relative;display:flex;align-items:flex-end;overflow:hidden}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.05);transition:transform 8s ease}
+.hero-img.loaded{transform:scale(1)}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,0.72) 35%,rgba(8,8,8,0.3) 70%,rgba(8,8,8,0.1) 100%)}
+.hero-content{position:relative;z-index:2;padding:0 2.5rem 5rem;max-width:900px}
+.hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(200,169,110,0.12);border:1px solid rgba(200,169,110,0.3);color:var(--accent);font-size:0.68rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;padding:0.4rem 1rem;border-radius:100px;margin-bottom:1.5rem}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%}
+.hero-title{font-family:var(--font-display);font-size:clamp(4rem, 10vw, 8.5rem);line-height:0.92;letter-spacing:0.02em;color:#fff;margin-bottom:1.5rem;opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease}
+.hero-title.visible{opacity:1;transform:translateY(0)}
+.hero-title em{color:var(--accent);font-style:normal;display:block}
+.hero-sub{font-size:1rem;color:rgba(240,240,240,0.65);max-width:480px;margin-bottom:2.2rem;line-height:1.7;opacity:0;transform:translateY(20px);transition:opacity 0.7s ease 0.15s,transform 0.7s ease 0.15s}
+.hero-sub.visible{opacity:1;transform:translateY(0)}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;transform:translateY(20px);transition:opacity 0.7s ease 0.28s,transform 0.7s ease 0.28s}
+.hero-actions.visible{opacity:1;transform:translateY(0)}
+.btn-primary{background:var(--accent);color:#080808;font-size:0.75rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;padding:0.9rem 2.2rem;border-radius:var(--radius);display:inline-block;transition:background var(--transition),transform var(--transition)}
+.btn-primary:hover{background:var(--accent-dark);transform:translateY(-2px)}
+.btn-outline{border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:0.75rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;padding:0.9rem 2.2rem;border-radius:var(--radius);display:inline-block;transition:border-color var(--transition),background var(--transition)}
+.btn-outline:hover{border-color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.05)}
+
+/* SERVICE TYPE CARDS (like SuperShuttle's 2 option cards) */
+.service-types{background:var(--bg);padding:4rem 2.5rem}
+.service-types-inner{max-width:900px;margin:0 auto;text-align:center}
+.section-eyebrow{font-size:0.68rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem}
+.service-types h2{font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);letter-spacing:0.06em;color:#fff;margin-bottom:0.6rem}
+.service-types-lead{color:var(--text-muted);font-size:0.95rem;margin-bottom:2.8rem}
+.service-type-cards{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:0}
+.stc{background:var(--bg-card);padding:2.5rem 2rem;text-align:center;transition:background var(--transition)}
+.stc:hover{background:#161616}
+.stc-icon{font-size:1.6rem;margin-bottom:1rem;display:block}
+.stc-label{font-family:var(--font-display);font-size:1.6rem;letter-spacing:0.08em;color:#fff;margin-bottom:0.4rem}
+.stc-price{font-size:1.5rem;font-weight:300;color:var(--accent);margin-bottom:0.5rem}
+.stc-price strong{font-weight:600}
+.stc-detail{font-size:0.82rem;color:var(--text-muted)}
+
+/* SECTIONS GENERAL */
+section{padding:5.5rem 2.5rem}
+.section-inner{max-width:1100px;margin:0 auto}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.65s ease,transform 0.65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* TWO COLUMN SECTIONS */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.col-heading{font-family:var(--font-display);font-size:2.2rem;letter-spacing:0.07em;color:var(--accent);margin-bottom:1.2rem}
+.col-body{color:rgba(240,240,240,0.7);font-size:0.95rem;line-height:1.8;margin-bottom:1.5rem}
+.col-list{list-style:none;display:flex;flex-direction:column;gap:0.6rem}
+.col-list li{font-size:0.9rem;color:rgba(240,240,240,0.65);display:flex;align-items:center;gap:0.7rem}
+.col-list li::before{content:'—';color:var(--accent);flex-shrink:0}
+.col-image{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--radius);filter:brightness(0.9)}
+.section-divider{border:none;border-top:1px solid var(--border);margin:0 2.5rem}
+
+/* CAPACITY */
+.capacity{background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:4.5rem 2.5rem;text-align:center}
+.capacity-num{font-family:var(--font-display);font-size:clamp(8rem,20vw,16rem);line-height:0.8;color:rgba(200,169,110,0.08);letter-spacing:-0.02em;display:block;margin-bottom:-2rem}
+.capacity-label{font-family:var(--font-display);font-size:clamp(2rem,5vw,3.5rem);letter-spacing:0.1em;color:#fff;margin-bottom:1rem;position:relative;z-index:1}
+.capacity-sub{color:var(--text-muted);font-size:0.95rem;max-width:480px;margin:0 auto}
+
+/* FULL WIDTH IMAGE SECTION */
+.full-img-section{position:relative;height:60vh;min-height:420px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.full-img-section img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.full-img-overlay{position:absolute;inset:0;background:rgba(8,8,8,0.68)}
+.full-img-content{position:relative;z-index:2;text-align:center;padding:2rem}
+.full-img-content h2{font-family:var(--font-display);font-size:clamp(3rem,8vw,6.5rem);line-height:0.9;letter-spacing:0.04em;color:#fff;margin-bottom:1rem}
+.full-img-content h2 em{color:var(--accent);font-style:normal;display:block}
+.full-img-content p{color:rgba(255,255,255,0.6);font-size:1rem;max-width:500px;margin:0 auto}
+
+/* CONTACT/RESERVE */
+.reserve{background:var(--bg);padding:4.5rem 2.5rem;text-align:center}
+.reserve h2{font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:0.08em;color:var(--accent);margin-bottom:0.5rem}
+.reserve p{color:var(--text-muted);font-size:0.9rem;margin-bottom:2.5rem}
+.contact-cards{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.contact-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 2.2rem;display:flex;align-items:center;gap:0.8rem;transition:border-color var(--transition),background var(--transition)}
+.contact-card:hover{border-color:var(--accent);background:#141414}
+.contact-card-icon{color:var(--accent);font-size:1.1rem}
+.contact-card-text{font-size:0.88rem;color:rgba(240,240,240,0.8);font-weight:500}
+
+/* CTA SECTION */
+.cta-section{background:var(--bg-alt);border-top:1px solid var(--border);padding:6rem 2.5rem;text-align:center}
+.cta-section h2{font-family:var(--font-display);font-size:clamp(2.5rem,6vw,5rem);letter-spacing:0.05em;color:#fff;margin-bottom:1rem}
+.cta-section p{color:var(--text-muted);font-size:1rem;margin-bottom:2.5rem}
+.cta-btns{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+
+/* FOOTER */
+footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem}
+.footer-logo{font-family:var(--font-display);font-size:1.3rem;letter-spacing:0.12em;color:rgba(240,240,240,0.4)}
+.footer-links{display:flex;gap:2rem}
+.footer-links a{font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,240,240,0.3);transition:color var(--transition)}
+.footer-links a:hover{color:rgba(240,240,240,0.7)}
+.footer-copy{font-size:0.75rem;color:rgba(240,240,240,0.2);width:100%;text-align:center;padding-top:2rem;border-top:1px solid var(--border);margin-top:1rem}
+
+@media (prefers-reduced-motion: reduce) {
+  *,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important}
+}
+@media (max-width:900px) {
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+  .two-col{grid-template-columns:1fr;gap:3rem}
+  .service-type-cards{grid-template-columns:1fr;gap:0}
+  nav{padding:0 1.2rem}
+  .hero-content{padding:0 1.2rem 4rem}
+  section{padding:4rem 1.2rem}
+  .reserve,.capacity,.service-types{padding:3.5rem 1.2rem}
+  .footer-inner{flex-direction:column;align-items:flex-start}
+  .contact-cards{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo"><img src="Gemini_Generated_Image_cgf1cicgf1cicgf1.jpg" alt="SZN Sprinters logo" class="nav-logo-img">SZN<span>&nbsp;</span>SPRINTERS</a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#airport">Airport</a>
+    <a href="#contact">Contact</a>
+    <a href="book.html" class="nav-cta">Book Now</a>
+  </div>
+  <div class="nav-hamburger" id="hamburger" aria-label="Menu" role="button" tabindex="0">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" class="mobile-link">Services</a>
+  <a href="#pricing" class="mobile-link">Pricing</a>
+  <a href="#airport" class="mobile-link">Airport</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+  <a href="book.html" class="m-cta">Book Now</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <img src="Screenshot%202026-08-27%20213350.png" alt="SZN Sprinters black Mercedes Sprinter van" class="hero-img" id="heroImg" loading="eager">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Up to 12 Passengers · Private Group Transportation</div>
+    <h1 class="hero-title" id="heroTitle">A DIFFERENT WORLD<em>OF GROUP TRAVEL.</em></h1>
+    <p class="hero-sub" id="heroSub">Private group transportation for airport travel, business events, weddings, and winery experiences.</p>
+    <div class="hero-actions" id="heroActions">
+      <a href="book.html" class="btn-primary">Book Now</a>
+      <a href="#services" class="btn-outline">View Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE TYPE CARDS (pricing overview — mirrors SuperShuttle layout) -->
+<div class="service-types" id="pricing">
+  <div class="service-types-inner">
+    <div class="section-eyebrow">Simple, Transparent Rates</div>
+    <h2>CHOOSE YOUR SERVICE</h2>
+    <p class="service-types-lead">Keep your group together and choose from two types of service.</p>
+    <div class="service-type-cards reveal">
+      <div class="stc">
+        <span class="stc-icon">⏱</span>
+        <div class="stc-label">HOURLY SERVICE</div>
+        <div class="stc-price"><strong id="hourlyRate">$100</strong> / hour</div>
+        <div class="stc-detail" id="hourlyMin">2-hour minimum</div>
+      </div>
+      <div class="stc">
+        <span class="stc-icon">📍</span>
+        <div class="stc-label">PICKUP & DROP-OFF</div>
+        <div class="stc-price"><strong id="pickupFee">$40</strong> pickup fee</div>
+        <div class="stc-detail">+ <span id="perMile">$4</span> per mile</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- AIRPORT + BUSINESS (2 column, mirrors SuperShuttle) -->
+<section id="airport">
+  <div class="section-inner">
+    <div class="two-col reveal">
+      <div>
+        <div class="col-heading">AIRPORT TRANSPORTATION</div>
+        <p class="col-body">Traveling with a group through San Francisco National Airport? SZN Sprinters provides private group transportation for up to 12 passengers, booked in advance.</p>
+        <p class="col-body" style="font-size:0.85rem;color:var(--text-dim)"><!-- Update airport name if needed --></p>
+        <ul class="col-list">
+          <li>Private vehicle — no shared rides</li>
+          <li>Up to 12 passengers, one booking</li>
+          <li>Scheduled in advance</li>
+          <li>Pickup & drop-off or hourly service</li>
+        </ul>
+      </div>
+      <div>
+        <img src="Screenshot%202026-08-27%20213829.png" alt="SZN Sprinters van rear view" class="col-image" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- BUSINESS + CORPORATE -->
+<section id="services">
+  <div class="section-inner">
+    <div class="two-col reveal">
+      <div>
+        <img src="Screenshot%202026-08-27%20213617.png" alt="SZN Sprinters van front view" class="col-image" loading="lazy">
+      </div>
+      <div>
+        <div class="col-heading">BUSINESS & CORPORATE</div>
+        <p class="col-body">Keep your group together and arrive ready for the next meeting, event, or destination. SZN Sprinters handles the logistics so your team can focus on what matters.</p>
+        <ul class="col-list">
+          <li>Business meetings & conferences</li>
+          <li>Corporate event transportation</li>
+          <li>Professional group travel</li>
+          <li>On-time, private, distraction-free</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPACITY -->
+<div class="capacity reveal" id="about">
+  <span class="capacity-num" aria-hidden="true">12</span>
+  <div class="capacity-label">UP TO 12 PASSENGERS</div>
+  <p class="capacity-sub">Private group transportation without splitting your party across multiple vehicles. Everyone travels together.</p>
+</div>
+
+<!-- FULL WIDTH — EXPERIENCE SECTION -->
+<div class="full-img-section">
+  <img src="Screenshot%202026-08-27%20213405.png" alt="SZN Sprinters van" loading="lazy">
+  <div class="full-img-overlay"></div>
+  <div class="full-img-content reveal">
+    <h2>A DIFFERENT WORLD<em>OF TRAVEL.</em></h2>
+    <p>One vehicle. One group. One seamless experience. SZN Sprinters is private group travel done differently.</p>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- WEDDINGS + WINERY -->
+<section>
+  <div class="section-inner">
+    <div class="two-col reveal">
+      <div>
+        <div class="col-heading">WEDDINGS</div>
+        <p class="col-body">Elegant private transportation for wedding parties and guests. Keep your most important guests comfortable, on schedule, and together throughout the day.</p>
+        <ul class="col-list">
+          <li>Ceremony & reception transfers</li>
+          <li>Entire wedding party, one vehicle</li>
+          <li>Private, relaxed, on your schedule</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-heading">WINERY EXPERIENCES</div>
+        <p class="col-body">Private group transportation for winery visits and wine country experiences. Arrive together, enjoy the experience, return safely — all in one private vehicle.</p>
+        <ul class="col-list">
+          <li>Wine country day trips</li>
+          <li>Private group reservations</li>
+          <li>Flexible pickup & return</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FULL WIDTH — VAN SIDE VIEW -->
+<div class="full-img-section" style="height:50vh">
+  <img src="Screenshot%202026-08-27%20213347.png" alt="SZN Sprinters sprinter van close-up" loading="lazy">
+  <div class="full-img-overlay" style="background:rgba(8,8,8,0.55)"></div>
+  <div class="full-img-content reveal">
+    <h2 style="font-size:clamp(2rem,5vw,3.5rem)">WHEREVER THE DAY TAKES YOU.</h2>
+  </div>
+</div>
+
+<!-- CONTACT / RESERVE -->
+<div class="reserve" id="contact">
+  <div class="section-eyebrow">Get In Touch</div>
+  <h2>TO RESERVE YOUR SPRINTER</h2>
+  <p>Contact us directly to book your group transportation.</p>
+  <div class="contact-cards">
+    <a href="#" class="contact-card" id="phoneCard">
+      <span class="contact-card-icon">📞</span>
+      <span class="contact-card-text" id="phoneDisplay">—</span>
+    </a>
+    <a href="#" class="contact-card" id="emailCard">
+      <span class="contact-card-icon">✉️</span>
+      <span class="contact-card-text" id="emailDisplay">—</span>
+    </a>
+    <a href="https://www.instagram.com/sznsprinter/" target="_blank" rel="noopener" class="contact-card">
+      <span class="contact-card-icon">📷</span>
+      <span class="contact-card-text">@sznsprinter</span>
+    </a>
+    <a href="#" class="contact-card" id="venmoCard" style="display:none">
+      <span class="contact-card-icon">💳</span>
+      <span class="contact-card-text" id="venmoDisplay">Venmo</span>
+    </a>
+  </div>
+</div>
+
+<!-- BOOKING CTA -->
+<div class="cta-section">
+  <h2>READY TO TRAVEL DIFFERENTLY?</h2>
+  <p>Private group transportation for up to 12 passengers.</p>
+  <div class="cta-btns">
+    <a href="book.html" class="btn-primary">Book Your Ride</a>
+    <a href="#contact" class="btn-outline">Contact Us</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">SZN SPRINTERS</div>
+    <div class="footer-links">
+      <a href="#services">Services</a>
+      <a href="#pricing">Pricing</a>
+      <a href="book.html">Book</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 SZN Sprinters. All rights reserved. · Private Group Transportation</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ── CONFIG ──────────────────────────────────────────────
+const SUPABASE_URL = 'https://kglmpqkeblbltsitlovs.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_I1l_xv_BtCjbHPmWkFR1SQ_o10qt5yn';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// ── NAV SCROLL ───────────────────────────────────────────
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 30);
+}, { passive: true });
+
+// ── HAMBURGER ────────────────────────────────────────────
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.toggle('open');
+});
+document.querySelectorAll('.mobile-link, .m-cta').forEach(el => {
+  el.addEventListener('click', () => mobileMenu.classList.remove('open'));
+});
+
+// ── HERO ENTRANCE ────────────────────────────────────────
+window.addEventListener('load', () => {
+  document.getElementById('heroImg').classList.add('loaded');
+  setTimeout(() => {
+    document.getElementById('heroTitle').classList.add('visible');
+    setTimeout(() => document.getElementById('heroSub').classList.add('visible'), 150);
+    setTimeout(() => document.getElementById('heroActions').classList.add('visible'), 280);
+  }, 100);
+});
+
+// ── SCROLL REVEAL ────────────────────────────────────────
+const revealEls = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => revealObs.observe(el));
+} else {
+  revealEls.forEach(el => el.classList.add('visible'));
+}
+// Fallback: ensure all reveals fire after page load
+setTimeout(() => revealEls.forEach(el => el.classList.add('visible')), 400);
+
+// ── LOAD SETTINGS ────────────────────────────────────────
+async function loadSettings() {
+  try {
+    const { data } = await sb.from('site_settings').select('key, value');
+    if (!data) return;
+    const s = Object.fromEntries(data.map(r => [r.key, r.value]));
+
+    // Pricing
+    if (s.hourly_rate) document.getElementById('hourlyRate').textContent = '$' + s.hourly_rate;
+    if (s.hourly_minimum) document.getElementById('hourlyMin').textContent = s.hourly_minimum + '-hour minimum';
+    if (s.pickup_fee) document.getElementById('pickupFee').textContent = '$' + s.pickup_fee;
+    if (s.per_mile_rate) document.getElementById('perMile').textContent = '$' + s.per_mile_rate;
+
+    // Contact
+    if (s.phone) {
+      document.getElementById('phoneDisplay').textContent = s.phone;
+      document.getElementById('phoneCard').href = 'tel:' + s.phone.replace(/\D/g, '');
+    }
+    if (s.email) {
+      document.getElementById('emailDisplay').textContent = s.email;
+      document.getElementById('emailCard').href = 'mailto:' + s.email;
+    }
+    if (s.venmo) {
+      document.getElementById('venmoDisplay').textContent = '@' + s.venmo;
+      const vc = document.getElementById('venmoCard');
+      vc.style.display = '';
+      vc.href = 'https://venmo.com/' + s.venmo;
+    }
+  } catch (err) {
+    console.warn('Settings load failed:', err.message);
+  }
+}
+loadSettings();
+</script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Ride — SZN Sprinters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080808;
+  --bg-card: #0f0f0f;
+  --bg-input: #141414;
+  --bg-hover: #1a1a1a;
+  --text: #f0f0f0;
+  --text-muted: #707070;
+  --text-dim: #3a3a3a;
+  --accent: #c8a96e;
+  --accent-dark: #a88a52;
+  --border: #1e1e1e;
+  --border-focus: #c8a96e;
+  --error: #e05555;
+  --success: #4caf6e;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --radius: 3px;
+  --radius-input: 4px;
+  --transition: 0.2s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,0.97);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--font-display);font-size:1.4rem;letter-spacing:0.12em;color:#fff;display:flex;align-items:center;gap:0.55rem}
+.nav-logo-img{width:34px;height:34px;object-fit:contain;border-radius:50%;flex-shrink:0}
+.nav-back{font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);display:flex;align-items:center;gap:0.5rem;transition:color var(--transition)}
+.nav-back:hover{color:#fff}
+.nav-back::before{content:'←'}
+
+/* LAYOUT */
+.page{padding-top:64px;min-height:100vh;display:grid;grid-template-columns:1fr 440px}
+@media(max-width:860px){.page{grid-template-columns:1fr;grid-template-rows:auto auto}}
+
+/* LEFT PANEL */
+.left-panel{background:var(--bg-card);border-right:1px solid var(--border);padding:3.5rem 3rem;display:flex;flex-direction:column;justify-content:space-between}
+@media(max-width:860px){.left-panel{padding:2.5rem 1.5rem;border-right:none;border-bottom:1px solid var(--border)}}
+.left-brand{margin-bottom:3rem}
+.left-brand-name{font-family:var(--font-display);font-size:1rem;letter-spacing:0.18em;color:var(--text-muted);margin-bottom:1.5rem;text-transform:uppercase}
+.left-headline{font-family:var(--font-display);font-size:clamp(2.8rem,6vw,4.5rem);line-height:0.9;letter-spacing:0.03em;color:#fff;margin-bottom:1.2rem}
+.left-headline em{color:var(--accent);font-style:normal;display:block}
+.left-sub{color:var(--text-muted);font-size:0.9rem;line-height:1.75;max-width:340px}
+.pricing-preview{margin-top:3rem;display:flex;flex-direction:column;gap:1rem}
+.pp-item{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.pp-name{font-size:0.8rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:rgba(240,240,240,0.6)}
+.pp-price{font-size:0.95rem;color:var(--accent);font-weight:600}
+.pp-detail{font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem}
+.left-van{margin-top:auto;padding-top:3rem}
+.left-van img{width:100%;border-radius:var(--radius);filter:brightness(0.75);object-fit:cover;max-height:220px}
+@media(max-width:860px){.left-van{display:none}}
+
+/* RIGHT PANEL — FORM */
+.right-panel{padding:3.5rem 3rem;overflow-y:auto}
+@media(max-width:860px){.right-panel{padding:2.5rem 1.5rem}}
+.form-title{font-family:var(--font-display);font-size:1.6rem;letter-spacing:0.08em;color:#fff;margin-bottom:0.35rem}
+.form-sub{font-size:0.82rem;color:var(--text-muted);margin-bottom:2.5rem}
+
+/* SERVICE TYPE SELECT */
+.service-select-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:2rem}
+.svc-card{background:var(--bg-input);border:1.5px solid var(--border);border-radius:var(--radius-input);padding:1rem 0.9rem;cursor:pointer;text-align:center;transition:border-color var(--transition),background var(--transition)}
+.svc-card:hover{border-color:rgba(200,169,110,0.4);background:var(--bg-hover)}
+.svc-card.active{border-color:var(--accent);background:rgba(200,169,110,0.06)}
+.svc-card-icon{font-size:1.3rem;margin-bottom:0.4rem;display:block}
+.svc-card-label{font-size:0.75rem;font-weight:600;letter-spacing:0.06em;color:rgba(240,240,240,0.8);line-height:1.3}
+
+/* FORM FIELDS */
+.form-group{margin-bottom:1.4rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:500px){.form-row{grid-template-columns:1fr}}
+label{display:block;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem}
+label .req{color:var(--accent);margin-left:2px}
+input,select,textarea{width:100%;background:var(--bg-input);border:1.5px solid var(--border);border-radius:var(--radius-input);color:var(--text);font-family:var(--font-body);font-size:0.9rem;padding:0.75rem 1rem;outline:none;transition:border-color var(--transition),background var(--transition);appearance:none;-webkit-appearance:none}
+input::placeholder,textarea::placeholder{color:var(--text-dim)}
+input:focus,select:focus,textarea:focus{border-color:var(--border-focus);background:var(--bg-hover)}
+input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.5) sepia(1) hue-rotate(5deg) saturate(3);cursor:pointer}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23787878' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem}
+select option{background:#111}
+textarea{resize:vertical;min-height:90px}
+.pax-row{display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-radius:var(--radius-input);overflow:hidden;background:var(--bg-input)}
+.pax-btn{background:none;border:none;color:var(--text-muted);font-size:1.1rem;padding:0.75rem 1.1rem;cursor:pointer;transition:color var(--transition),background var(--transition);flex-shrink:0}
+.pax-btn:hover{color:#fff;background:var(--bg-hover)}
+.pax-val{flex:1;text-align:center;font-size:0.92rem;color:var(--text);border:none;background:none;pointer-events:none;font-family:var(--font-body)}
+.field-hint{font-size:0.73rem;color:var(--text-muted);margin-top:0.4rem}
+.field-error{font-size:0.73rem;color:var(--error);margin-top:0.4rem;display:none}
+.field-error.show{display:block}
+input.invalid,select.invalid{border-color:var(--error)}
+
+/* SECTION DIVIDER */
+.form-section-label{font-size:0.68rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin:2rem 0 1.4rem;padding-top:2rem;border-top:1px solid var(--border)}
+
+/* SUBMIT */
+.btn-submit{width:100%;background:var(--accent);color:#080808;font-family:var(--font-body);font-size:0.8rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:1rem;border:none;border-radius:var(--radius-input);cursor:pointer;margin-top:1.5rem;transition:background var(--transition),transform var(--transition)}
+.btn-submit:hover:not(:disabled){background:var(--accent-dark);transform:translateY(-1px)}
+.btn-submit:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.form-note{font-size:0.75rem;color:var(--text-muted);text-align:center;margin-top:1rem;line-height:1.6}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;left:auto;max-width:380px;background:#1a1a1a;border:1px solid;border-radius:var(--radius-input);padding:1.2rem 1.5rem;font-size:0.88rem;line-height:1.5;z-index:999;transform:translateY(20px);opacity:0;transition:all 0.3s ease;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
+.toast.success{border-color:var(--success);color:var(--success)}
+.toast.error{border-color:var(--error);color:var(--error)}
+
+/* SUCCESS STATE */
+.success-state{display:none;text-align:center;padding:4rem 2rem}
+.success-state.show{display:block}
+.success-icon{font-size:3.5rem;margin-bottom:1.5rem}
+.success-state h2{font-family:var(--font-display);font-size:2.5rem;letter-spacing:0.06em;color:#fff;margin-bottom:1rem}
+.success-state p{color:var(--text-muted);font-size:0.95rem;margin-bottom:2rem;max-width:340px;margin-left:auto;margin-right:auto}
+.btn-back{background:var(--accent);color:#080808;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:0.9rem 2rem;border-radius:var(--radius);display:inline-block;transition:background var(--transition)}
+.btn-back:hover{background:var(--accent-dark)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><img src="Gemini_Generated_Image_cgf1cicgf1cicgf1.jpg" alt="SZN Sprinters" class="nav-logo-img">SZN SPRINTERS</a>
+  <a href="index.html" class="nav-back">Back to Home</a>
+</nav>
+
+<div class="page">
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="left-brand">
+      <div class="left-brand-name">SZN Sprinters</div>
+      <h2 class="left-headline">BOOK YOUR<em>RIDE.</em></h2>
+      <p class="left-sub">Private group transportation for up to 12 passengers. Submit your request and we'll confirm your booking.</p>
+      <div class="pricing-preview">
+        <div class="pp-item">
+          <div>
+            <div class="pp-name">Hourly Service</div>
+            <div class="pp-detail" id="hourlyDetail">2-hour minimum</div>
+          </div>
+          <div class="pp-price"><span id="hourlyRateL">$100</span> / hr</div>
+        </div>
+        <div class="pp-item">
+          <div>
+            <div class="pp-name">Pickup &amp; Drop-Off</div>
+            <div class="pp-detail">+<span id="perMileL">$4</span>/mile</div>
+          </div>
+          <div class="pp-price"><span id="pickupFeeL">$40</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="left-van">
+      <img src="Screenshot%202026-08-27%20213350.png" alt="SZN Sprinters van" loading="lazy">
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL — FORM -->
+  <div class="right-panel">
+    <!-- Success state -->
+    <div class="success-state" id="successState">
+      <div class="success-icon">✓</div>
+      <h2>REQUEST SENT.</h2>
+      <p>We've received your booking request. We'll reach out to confirm your ride.</p>
+      <a href="index.html" class="btn-back">Back to Home</a>
+    </div>
+
+    <!-- Form -->
+    <div id="formWrapper">
+      <div class="form-title">Request a Booking</div>
+      <p class="form-sub">All requests are reviewed and confirmed by the SZN Sprinters team.</p>
+
+      <form id="bookingForm" novalidate>
+        <!-- SERVICE TYPE -->
+        <div class="form-group">
+          <label>Service Type <span class="req">*</span></label>
+          <div class="service-select-grid">
+            <div class="svc-card active" data-value="Airport Transportation" tabindex="0" role="button">
+              <span class="svc-card-icon">✈️</span>
+              <div class="svc-card-label">Airport<br>Transportation</div>
+            </div>
+            <div class="svc-card" data-value="Business / Corporate" tabindex="0" role="button">
+              <span class="svc-card-icon">💼</span>
+              <div class="svc-card-label">Business /<br>Corporate</div>
+            </div>
+            <div class="svc-card" data-value="Wedding" tabindex="0" role="button">
+              <span class="svc-card-icon">💍</span>
+              <div class="svc-card-label">Wedding</div>
+            </div>
+            <div class="svc-card" data-value="Winery Experience" tabindex="0" role="button">
+              <span class="svc-card-icon">🍷</span>
+              <div class="svc-card-label">Winery<br>Experience</div>
+            </div>
+          </div>
+          <input type="hidden" id="serviceType" value="Airport Transportation">
+        </div>
+
+        <!-- BILLING TYPE -->
+        <div class="form-group">
+          <label>How would you like to be billed? <span class="req">*</span></label>
+          <div class="service-select-grid" style="grid-template-columns:1fr 1fr">
+            <div class="svc-card active" data-billing="Hourly Service" tabindex="0" role="button" id="billingHourly">
+              <span class="svc-card-icon">⏱</span>
+              <div class="svc-card-label">Hourly Service<br><span style="color:var(--accent);font-size:0.7rem">$100/hr · 2hr min</span></div>
+            </div>
+            <div class="svc-card" data-billing="Pickup & Drop-Off" tabindex="0" role="button" id="billingPickup">
+              <span class="svc-card-icon">📍</span>
+              <div class="svc-card-label">Pickup &amp; Drop-Off<br><span style="color:var(--accent);font-size:0.7rem">$40 + $4/mi</span></div>
+            </div>
+          </div>
+          <input type="hidden" id="billingType" value="Hourly Service">
+        </div>
+
+        <!-- DATE & TIME -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="rideDate">Date <span class="req">*</span></label>
+            <input type="date" id="rideDate" required min="">
+            <div class="field-error" id="dateErr">Please select a date.</div>
+          </div>
+          <div class="form-group">
+            <label for="rideTime">Pickup Time</label>
+            <input type="time" id="rideTime" min="06:00" max="22:00">
+          </div>
+        </div>
+
+        <!-- PASSENGERS -->
+        <div class="form-group">
+          <label>Number of Passengers <span class="req">*</span></label>
+          <div class="pax-row">
+            <button type="button" class="pax-btn" id="paxMinus">−</button>
+            <input type="text" class="pax-val" id="paxCount" value="2" readonly>
+            <button type="button" class="pax-btn" id="paxPlus">+</button>
+          </div>
+          <div class="field-hint">Maximum 12 passengers · Service hours 6:00 AM – 10:00 PM</div>
+        </div>
+
+        <!-- LOCATIONS -->
+        <div class="form-section-label">Trip Details</div>
+        <div class="form-group">
+          <label for="pickupLoc">Pickup Location</label>
+          <input type="text" id="pickupLoc" placeholder="Address or location">
+        </div>
+        <div class="form-group">
+          <label for="destination">Destination</label>
+          <input type="text" id="destination" placeholder="Address or location">
+        </div>
+        <div class="form-group">
+          <label for="notes">Additional Details</label>
+          <textarea id="notes" placeholder="Flight number, special requests, event details..."></textarea>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="form-section-label">Your Info</div>
+        <div class="form-group">
+          <label for="custName">Full Name <span class="req">*</span></label>
+          <input type="text" id="custName" placeholder="Your name" required autocomplete="name">
+          <div class="field-error" id="nameErr">Name is required.</div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="custEmail">Email <span class="req">*</span></label>
+            <input type="email" id="custEmail" placeholder="you@email.com" required autocomplete="email">
+            <div class="field-error" id="emailErr">Valid email required.</div>
+          </div>
+          <div class="form-group">
+            <label for="custPhone">Phone <span class="req">*</span></label>
+            <input type="tel" id="custPhone" placeholder="(555) 000-0000" required autocomplete="tel">
+            <div class="field-error" id="phoneErr">Phone number required.</div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">Send Booking Request</button>
+        <p class="form-note">This is a request — not a confirmed booking. We'll contact you to confirm details and arrange payment.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://kglmpqkeblbltsitlovs.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_I1l_xv_BtCjbHPmWkFR1SQ_o10qt5yn';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// ── MIN DATE ──────────────────────────────────────────────
+const dateInput = document.getElementById('rideDate');
+const today = new Date().toISOString().split('T')[0];
+dateInput.min = today;
+
+// ── SERVICE TYPE CARDS ────────────────────────────────────
+document.querySelectorAll('[data-value]').forEach(card => {
+  card.addEventListener('click', () => selectService(card));
+  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') selectService(card); });
+});
+function selectService(card) {
+  card.closest('.service-select-grid').querySelectorAll('.svc-card').forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+  document.getElementById('serviceType').value = card.dataset.value;
+}
+
+// ── BILLING TYPE CARDS ────────────────────────────────────
+document.querySelectorAll('[data-billing]').forEach(card => {
+  card.addEventListener('click', () => selectBilling(card));
+  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') selectBilling(card); });
+});
+function selectBilling(card) {
+  document.querySelectorAll('[data-billing]').forEach(c => c.classList.remove('active'));
+  card.classList.add('active');
+  document.getElementById('billingType').value = card.dataset.billing;
+}
+
+// ── PASSENGER COUNTER ─────────────────────────────────────
+let pax = 2;
+document.getElementById('paxMinus').addEventListener('click', () => { if (pax > 1) pax--; document.getElementById('paxCount').value = pax; });
+document.getElementById('paxPlus').addEventListener('click', () => { if (pax < 12) pax++; document.getElementById('paxCount').value = pax; });
+
+// ── TOAST ─────────────────────────────────────────────────
+function showToast(msg, type = 'error') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 5000);
+}
+
+// ── VALIDATION ────────────────────────────────────────────
+function validate() {
+  let ok = true;
+  const name = document.getElementById('custName');
+  const email = document.getElementById('custEmail');
+  const phone = document.getElementById('custPhone');
+  const date = document.getElementById('rideDate');
+
+  const clearError = (id, input) => { document.getElementById(id).classList.remove('show'); input.classList.remove('invalid'); };
+  const showError = (id, input) => { document.getElementById(id).classList.add('show'); input.classList.add('invalid'); ok = false; };
+
+  clearError('nameErr', name); clearError('emailErr', email); clearError('phoneErr', phone); clearError('dateErr', date);
+
+  if (!name.value.trim()) showError('nameErr', name);
+  if (!email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) showError('emailErr', email);
+  if (!phone.value.trim()) showError('phoneErr', phone);
+  if (!date.value) showError('dateErr', date);
+
+  return ok;
+}
+
+// ── SUBMIT ────────────────────────────────────────────────
+document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!validate()) return;
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  const payload = {
+    name: document.getElementById('custName').value.trim(),
+    email: document.getElementById('custEmail').value.trim().toLowerCase(),
+    phone: document.getElementById('custPhone').value.trim(),
+    service_type: document.getElementById('serviceType').value,
+    billing_type: document.getElementById('billingType').value,
+    date: document.getElementById('rideDate').value,
+    pickup_time: document.getElementById('rideTime').value || null,
+    pickup_location: document.getElementById('pickupLoc').value.trim() || null,
+    destination: document.getElementById('destination').value.trim() || null,
+    passengers: pax,
+    notes: document.getElementById('notes').value.trim() || null,
+    status: 'pending'
+  };
+
+  try {
+    const { error } = await sb.from('bookings').insert(payload);
+    if (error) throw error;
+    document.getElementById('formWrapper').style.display = 'none';
+    document.getElementById('successState').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    console.error(err);
+    showToast('Something went wrong. Please try again or contact us directly.');
+    btn.disabled = false;
+    btn.textContent = 'Send Booking Request';
+  }
+});
+
+// ── LOAD PRICING ──────────────────────────────────────────
+async function loadPricing() {
+  try {
+    const { data } = await sb.from('site_settings').select('key, value');
+    if (!data) return;
+    const s = Object.fromEntries(data.map(r => [r.key, r.value]));
+    if (s.hourly_rate) document.getElementById('hourlyRateL').textContent = '$' + s.hourly_rate;
+    if (s.hourly_minimum) document.getElementById('hourlyDetail').textContent = s.hourly_minimum + '-hour minimum';
+    if (s.pickup_fee) document.getElementById('pickupFeeL').textContent = '$' + s.pickup_fee;
+    if (s.per_mile_rate) document.getElementById('perMileL').textContent = '$' + s.per_mile_rate;
+  } catch(e) {}
+}
+loadPricing();
+</script>
+</body>
+</html>

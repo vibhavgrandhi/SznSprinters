@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — SZN Sprinters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080808;
+  --bg-card: #0f0f0f;
+  --bg-input: #141414;
+  --bg-hover: #181818;
+  --sidebar: #0a0a0a;
+  --text: #f0f0f0;
+  --text-muted: #686868;
+  --text-dim: #333;
+  --accent: #c8a96e;
+  --accent-dark: #a88a52;
+  --border: #1c1c1c;
+  --border-light: #242424;
+  --pending: #e8a93a;
+  --confirmed: #4caf6e;
+  --declined: #e05555;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --radius: 4px;
+  --transition: 0.2s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+input,select,textarea{font-family:inherit}
+
+/* ── LOGIN SCREEN ───────────────────────────────────────── */
+#loginScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;padding:1.5rem}
+#loginScreen.hidden{display:none}
+.login-box{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:3rem 2.5rem;width:100%;max-width:380px}
+.login-logo{font-family:var(--font-display);font-size:1.2rem;letter-spacing:0.15em;color:rgba(240,240,240,0.4);margin-bottom:2.5rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:0.6rem}
+.login-logo img{width:56px;height:56px;object-fit:contain;border-radius:50%;opacity:0.6}
+.login-title{font-family:var(--font-display);font-size:2rem;letter-spacing:0.06em;color:#fff;margin-bottom:0.4rem}
+.login-sub{font-size:0.82rem;color:var(--text-muted);margin-bottom:2rem}
+.login-field{margin-bottom:1.2rem}
+.login-field label{display:block;font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.45rem}
+.login-field input{width:100%;background:var(--bg-input);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:0.9rem;padding:0.75rem 1rem;outline:none;transition:border-color var(--transition)}
+.login-field input:focus{border-color:var(--accent)}
+.login-btn{width:100%;background:var(--accent);color:#080808;border:none;border-radius:var(--radius);font-size:0.78rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:0.9rem;cursor:pointer;margin-top:0.5rem;transition:background var(--transition)}
+.login-btn:hover{background:var(--accent-dark)}
+.login-error{font-size:0.78rem;color:#e05555;margin-top:0.8rem;min-height:1.2rem;text-align:center}
+
+/* ── MAIN LAYOUT ───────────────────────────────────────── */
+#app{display:none;min-height:100vh}
+#app.show{display:grid;grid-template-columns:220px 1fr}
+@media(max-width:700px){#app.show{grid-template-columns:1fr;grid-template-rows:auto 1fr}}
+
+/* SIDEBAR */
+.sidebar{background:var(--sidebar);border-right:1px solid var(--border);height:100vh;position:sticky;top:0;display:flex;flex-direction:column;padding:2rem 0}
+@media(max-width:700px){.sidebar{height:auto;position:relative;padding:1rem 0;flex-direction:row;flex-wrap:wrap;align-items:center;border-right:none;border-bottom:1px solid var(--border)}}
+.sidebar-logo{font-family:var(--font-display);font-size:1rem;letter-spacing:0.15em;color:rgba(240,240,240,0.35);padding:0 1.5rem 2rem;flex-shrink:0}
+@media(max-width:700px){.sidebar-logo{padding:0.5rem 1rem;font-size:0.85rem;width:100%;padding-bottom:0.5rem}}
+.sidebar-nav{display:flex;flex-direction:column;gap:2px;flex:1}
+@media(max-width:700px){.sidebar-nav{flex-direction:row;flex-wrap:wrap;padding:0.5rem;gap:4px;width:100%}}
+.sidebar-link{display:flex;align-items:center;gap:0.7rem;padding:0.7rem 1.5rem;font-size:0.78rem;font-weight:500;letter-spacing:0.07em;color:var(--text-muted);cursor:pointer;transition:color var(--transition),background var(--transition);user-select:none;border:none;background:none;width:100%;text-align:left}
+.sidebar-link:hover{color:#fff;background:rgba(255,255,255,0.03)}
+.sidebar-link.active{color:#fff;background:rgba(200,169,110,0.08);border-right:2px solid var(--accent)}
+@media(max-width:700px){.sidebar-link{padding:0.5rem 0.8rem;font-size:0.72rem;border-radius:var(--radius);width:auto;border-right:none}}
+.sidebar-link.active{border-right:none}
+@media(max-width:700px){.sidebar-link.active{background:rgba(200,169,110,0.12)}}
+.sidebar-count{margin-left:auto;background:var(--pending);color:#080808;font-size:0.65rem;font-weight:700;padding:0.15rem 0.45rem;border-radius:100px;min-width:18px;text-align:center}
+.sidebar-count.hidden{display:none}
+.sidebar-footer{padding:1.5rem;margin-top:auto}
+@media(max-width:700px){.sidebar-footer{padding:0.5rem 1rem;margin-top:0;width:100%}}
+.logout-btn{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);background:none;border:1px solid var(--border);border-radius:var(--radius);padding:0.45rem 0.9rem;cursor:pointer;transition:color var(--transition),border-color var(--transition)}
+.logout-btn:hover{color:var(--text-muted);border-color:var(--border-light)}
+
+/* MAIN CONTENT */
+.main{padding:2.5rem;overflow-y:auto;min-height:0}
+@media(max-width:700px){.main{padding:1.2rem}}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.section-title{font-family:var(--font-display);font-size:1.8rem;letter-spacing:0.07em;color:#fff}
+.refresh-btn{background:none;border:1px solid var(--border);color:var(--text-muted);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 1rem;border-radius:var(--radius);cursor:pointer;transition:all var(--transition)}
+.refresh-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* TABS */
+.tab-view{display:none}
+.tab-view.active{display:block}
+
+/* BOOKINGS TABLE/CARDS */
+.bookings-list{display:flex;flex-direction:column;gap:0.75rem}
+.booking-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.6rem;transition:border-color var(--transition)}
+.booking-card:hover{border-color:var(--border-light)}
+.bc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:0.8rem}
+.bc-name{font-size:1rem;font-weight:600;color:#fff}
+.bc-service{font-size:0.78rem;color:var(--accent);font-weight:500;margin-top:0.2rem;text-transform:uppercase;letter-spacing:0.06em}
+.bc-status{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.75rem;border-radius:100px;flex-shrink:0}
+.bc-status.pending{background:rgba(232,169,58,0.12);color:var(--pending);border:1px solid rgba(232,169,58,0.25)}
+.bc-status.confirmed{background:rgba(76,175,110,0.1);color:var(--confirmed);border:1px solid rgba(76,175,110,0.2)}
+.bc-status.declined{background:rgba(224,85,85,0.1);color:var(--declined);border:1px solid rgba(224,85,85,0.2)}
+.bc-meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.5rem 1.5rem;margin-bottom:1rem}
+.bc-meta-item{font-size:0.8rem;color:var(--text-muted)}
+.bc-meta-item strong{color:rgba(240,240,240,0.75);font-weight:500;display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.15rem}
+.bc-notes{font-size:0.82rem;color:var(--text-muted);background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:3px;padding:0.7rem 1rem;margin-bottom:1rem;white-space:pre-wrap}
+.bc-actions{display:flex;gap:0.5rem;flex-wrap:wrap}
+.bc-btn{border:none;border-radius:var(--radius);font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.45rem 1rem;cursor:pointer;transition:all var(--transition)}
+.bc-btn.confirm{background:rgba(76,175,110,0.12);color:var(--confirmed);border:1px solid rgba(76,175,110,0.25)}
+.bc-btn.confirm:hover{background:rgba(76,175,110,0.2)}
+.bc-btn.decline{background:rgba(224,85,85,0.1);color:var(--declined);border:1px solid rgba(224,85,85,0.2)}
+.bc-btn.decline:hover{background:rgba(224,85,85,0.18)}
+.bc-btn.delete{background:rgba(255,255,255,0.04);color:var(--text-muted);border:1px solid var(--border)}
+.bc-btn.delete:hover{color:var(--declined);border-color:rgba(224,85,85,0.3)}
+.bc-date-sent{font-size:0.7rem;color:var(--text-dim);margin-left:auto;align-self:center}
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--text-muted);font-size:0.9rem}
+.loading-state{text-align:center;padding:3rem;color:var(--text-muted);font-size:0.85rem}
+
+/* SETTINGS */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:600px){.settings-grid{grid-template-columns:1fr}}
+.settings-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.8rem}
+.settings-card-title{font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:1.4rem}
+.settings-field{margin-bottom:1.2rem}
+.settings-field:last-child{margin-bottom:0}
+.settings-field label{display:block;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.4rem}
+.settings-field input,.settings-field textarea{width:100%;background:var(--bg-input);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:0.88rem;padding:0.65rem 0.9rem;outline:none;transition:border-color var(--transition)}
+.settings-field input:focus,.settings-field textarea:focus{border-color:var(--accent)}
+.settings-field .hint{font-size:0.72rem;color:var(--text-muted);margin-top:0.35rem}
+.settings-save-btn{background:var(--accent);color:#080808;border:none;border-radius:var(--radius);font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.7rem 1.6rem;cursor:pointer;margin-top:1.5rem;transition:background var(--transition)}
+.settings-save-btn:hover{background:var(--accent-dark)}
+.settings-save-btn:disabled{opacity:0.5;cursor:not-allowed}
+.save-feedback{font-size:0.78rem;margin-left:1rem;color:var(--confirmed);display:inline;opacity:0;transition:opacity 0.3s}
+.save-feedback.show{opacity:1}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;max-width:360px;background:#1a1a1a;border:1px solid;border-radius:var(--radius);padding:1rem 1.3rem;font-size:0.85rem;z-index:500;transform:translateY(10px);opacity:0;transition:all 0.3s ease;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
+.toast.success{border-color:var(--confirmed);color:var(--confirmed)}
+.toast.error{border-color:var(--declined);color:var(--declined)}
+
+@media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms !important;transition-duration:0.01ms !important}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo"><img src="Gemini_Generated_Image_cgf1cicgf1cicgf1.jpg" alt="SZN Sprinters">SZN SPRINTERS</div>
+    <div class="login-title">ADMIN</div>
+    <p class="login-sub">Sign in to manage bookings and settings.</p>
+    <div class="login-field">
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="Username" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password">
+    </div>
+    <button class="login-btn" id="loginBtn">Sign In</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo" style="display:flex;align-items:center;gap:0.5rem"><img src="Gemini_Generated_Image_cgf1cicgf1cicgf1.jpg" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:contain;opacity:0.5">SZN SPRINTERS</div>
+    <nav class="sidebar-nav">
+      <button class="sidebar-link active" data-tab="pending">
+        ⏳ Pending
+        <span class="sidebar-count" id="pendingCount">0</span>
+      </button>
+      <button class="sidebar-link" data-tab="confirmed">✓ Confirmed</button>
+      <button class="sidebar-link" data-tab="declined">✕ Declined</button>
+      <button class="sidebar-link" data-tab="all">≡ All Bookings</button>
+      <button class="sidebar-link" data-tab="settings">⚙ Settings</button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" id="logoutBtn">Log Out</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- PENDING -->
+    <div class="tab-view active" id="tab-pending">
+      <div class="section-header">
+        <div class="section-title">PENDING</div>
+        <button class="refresh-btn" id="refreshPending">↻ Refresh</button>
+      </div>
+      <div class="bookings-list" id="pendingList"><div class="loading-state">Loading...</div></div>
+    </div>
+
+    <!-- CONFIRMED -->
+    <div class="tab-view" id="tab-confirmed">
+      <div class="section-header">
+        <div class="section-title">CONFIRMED</div>
+        <button class="refresh-btn" id="refreshConfirmed">↻ Refresh</button>
+      </div>
+      <div class="bookings-list" id="confirmedList"><div class="loading-state">Loading...</div></div>
+    </div>
+
+    <!-- DECLINED -->
+    <div class="tab-view" id="tab-declined">
+      <div class="section-header">
+        <div class="section-title">DECLINED</div>
+        <button class="refresh-btn" id="refreshDeclined">↻ Refresh</button>
+      </div>
+      <div class="bookings-list" id="declinedList"><div class="loading-state">Loading...</div></div>
+    </div>
+
+    <!-- ALL -->
+    <div class="tab-view" id="tab-all">
+      <div class="section-header">
+        <div class="section-title">ALL BOOKINGS</div>
+        <button class="refresh-btn" id="refreshAll">↻ Refresh</button>
+      </div>
+      <div class="bookings-list" id="allList"><div class="loading-state">Loading...</div></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="tab-view" id="tab-settings">
+      <div class="section-header">
+        <div class="section-title">SETTINGS</div>
+      </div>
+      <div class="settings-grid">
+        <!-- CONTACT INFO -->
+        <div class="settings-card">
+          <div class="settings-card-title">Contact Info</div>
+          <div class="settings-field">
+            <label>Phone Number</label>
+            <input type="tel" id="s_phone" placeholder="(555) 000-0000">
+          </div>
+          <div class="settings-field">
+            <label>Email Address</label>
+            <input type="email" id="s_email" placeholder="you@email.com">
+          </div>
+          <div class="settings-field">
+            <label>Instagram</label>
+            <input type="url" id="s_instagram" placeholder="https://instagram.com/sznsprinter">
+            <div class="hint">Full URL</div>
+          </div>
+          <div class="settings-field">
+            <label>Venmo Handle</label>
+            <input type="text" id="s_venmo" placeholder="sznsprinters (no @)">
+          </div>
+          <button class="settings-save-btn" id="saveContact">Save Contact Info</button>
+          <span class="save-feedback" id="contactFeedback">Saved ✓</span>
+        </div>
+
+        <!-- PRICING -->
+        <div class="settings-card">
+          <div class="settings-card-title">Pricing</div>
+          <div class="settings-field">
+            <label>Hourly Rate ($/hr)</label>
+            <input type="number" id="s_hourly_rate" placeholder="100" min="0">
+          </div>
+          <div class="settings-field">
+            <label>Hourly Minimum (hours)</label>
+            <input type="number" id="s_hourly_minimum" placeholder="2" min="1">
+          </div>
+          <div class="settings-field">
+            <label>Pickup Fee ($)</label>
+            <input type="number" id="s_pickup_fee" placeholder="40" min="0">
+          </div>
+          <div class="settings-field">
+            <label>Per Mile Rate ($/mi)</label>
+            <input type="number" id="s_per_mile_rate" placeholder="4" min="0">
+          </div>
+          <button class="settings-save-btn" id="savePricing">Save Pricing</button>
+          <span class="save-feedback" id="pricingFeedback">Saved ✓</span>
+        </div>
+
+        <!-- TAGLINE -->
+        <div class="settings-card" style="grid-column:1/-1">
+          <div class="settings-card-title">Brand</div>
+          <div class="settings-field">
+            <label>Tagline / Quote</label>
+            <input type="text" id="s_tagline" placeholder="A different world of group travel.">
+            <div class="hint">Shown on homepage contact section</div>
+          </div>
+          <button class="settings-save-btn" id="saveBrand">Save Brand</button>
+          <span class="save-feedback" id="brandFeedback">Saved ✓</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ── CONFIG ────────────────────────────────────────────────
+const SUPABASE_URL = 'https://kglmpqkeblbltsitlovs.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_I1l_xv_BtCjbHPmWkFR1SQ_o10qt5yn';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+const ADMIN_USER = 'sznsprinters';
+const ADMIN_PASS = 'sznsprinters123';
+
+// ── TOAST ─────────────────────────────────────────────────
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// ── LOGIN ─────────────────────────────────────────────────
+const isLoggedIn = () => sessionStorage.getItem('szn_admin') === '1';
+
+function checkLogin() {
+  if (isLoggedIn()) {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('app').classList.add('show');
+    loadAll();
+  }
+}
+
+document.getElementById('loginBtn').addEventListener('click', doLogin);
+document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    sessionStorage.setItem('szn_admin', '1');
+    document.getElementById('loginError').textContent = '';
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('app').classList.add('show');
+    loadAll();
+  } else {
+    document.getElementById('loginError').textContent = 'Incorrect username or password.';
+  }
+}
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  sessionStorage.removeItem('szn_admin');
+  location.reload();
+});
+
+// ── TABS ──────────────────────────────────────────────────
+document.querySelectorAll('.sidebar-link[data-tab]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sidebar-link').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'settings') loadSettings();
+  });
+});
+
+// ── FORMAT HELPERS ────────────────────────────────────────
+function fmtDate(d) {
+  if (!d) return '—';
+  const dt = new Date(d + 'T00:00:00');
+  return dt.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+}
+function fmtTime(t) {
+  if (!t) return '—';
+  const [h, m] = t.split(':');
+  const hr = parseInt(h), ampm = hr >= 12 ? 'PM' : 'AM';
+  return `${hr % 12 || 12}:${m} ${ampm}`;
+}
+function fmtCreated(ts) {
+  if (!ts) return '';
+  return new Date(ts).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+}
+
+// ── BOOKING CARD HTML ─────────────────────────────────────
+function bookingCard(b, showActions = true) {
+  const statusClass = b.status === 'confirmed' ? 'confirmed' : b.status === 'declined' ? 'declined' : 'pending';
+  const actions = showActions ? `
+    <div class="bc-actions">
+      ${b.status !== 'confirmed' ? `<button class="bc-btn confirm" onclick="updateStatus('${b.id}','confirmed')">✓ Confirm</button>` : ''}
+      ${b.status !== 'declined' ? `<button class="bc-btn decline" onclick="updateStatus('${b.id}','declined')">✕ Decline</button>` : ''}
+      ${b.status === 'confirmed' ? `<button class="bc-btn decline" onclick="updateStatus('${b.id}','pending')">↩ Reset to Pending</button>` : ''}
+      <button class="bc-btn delete" onclick="deleteBooking('${b.id}')">🗑 Delete</button>
+      <span class="bc-date-sent">Submitted ${fmtCreated(b.created_at)}</span>
+    </div>` : '';
+
+  return `
+    <div class="booking-card" id="bc-${b.id}">
+      <div class="bc-top">
+        <div>
+          <div class="bc-name">${esc(b.name)}</div>
+          <div class="bc-service">${esc(b.service_type)}</div>
+        </div>
+        <span class="bc-status ${statusClass}">${b.status}</span>
+      </div>
+      <div class="bc-meta">
+        <div class="bc-meta-item"><strong>Date</strong>${fmtDate(b.date)}</div>
+        <div class="bc-meta-item"><strong>Time</strong>${fmtTime(b.pickup_time)}</div>
+        <div class="bc-meta-item"><strong>Passengers</strong>${b.passengers ?? '—'}</div>
+        <div class="bc-meta-item"><strong>Phone</strong><a href="tel:${esc(b.phone)}" style="color:var(--accent)">${esc(b.phone)}</a></div>
+        <div class="bc-meta-item"><strong>Email</strong><a href="mailto:${esc(b.email)}" style="color:var(--accent)">${esc(b.email)}</a></div>
+        ${b.pickup_location ? `<div class="bc-meta-item"><strong>Pickup</strong>${esc(b.pickup_location)}</div>` : ''}
+        ${b.destination ? `<div class="bc-meta-item"><strong>Destination</strong>${esc(b.destination)}</div>` : ''}
+      </div>
+      ${b.notes ? `<div class="bc-notes">${esc(b.notes)}</div>` : ''}
+      ${actions}
+    </div>`;
+}
+function esc(s) { return (s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ── LOAD BOOKINGS ─────────────────────────────────────────
+async function loadBookings(status, listId) {
+  const el = document.getElementById(listId);
+  el.innerHTML = '<div class="loading-state">Loading...</div>';
+  try {
+    let q = sb.from('bookings').select('*').order('created_at', { ascending: false });
+    if (status) q = q.eq('status', status);
+    const { data, error } = await q;
+    if (error) throw error;
+    if (!data || data.length === 0) {
+      el.innerHTML = '<div class="empty-state">No bookings found.</div>';
+      return;
+    }
+    el.innerHTML = data.map(b => bookingCard(b)).join('');
+    // Update pending count badge
+    if (!status) {
+      const cnt = data.filter(b => b.status === 'pending').length;
+      updatePendingBadge(cnt);
+    }
+  } catch(err) {
+    el.innerHTML = `<div class="empty-state" style="color:var(--declined)">Error loading bookings: ${err.message}</div>`;
+  }
+}
+
+function updatePendingBadge(n) {
+  const badge = document.getElementById('pendingCount');
+  badge.textContent = n;
+  badge.classList.toggle('hidden', n === 0);
+}
+
+async function loadAll() {
+  await loadBookings('pending', 'pendingList');
+  loadBookings('confirmed', 'confirmedList');
+  loadBookings('declined', 'declinedList');
+  loadBookings(null, 'allList');
+}
+
+// Refresh buttons
+document.getElementById('refreshPending').addEventListener('click', () => loadBookings('pending', 'pendingList'));
+document.getElementById('refreshConfirmed').addEventListener('click', () => loadBookings('confirmed', 'confirmedList'));
+document.getElementById('refreshDeclined').addEventListener('click', () => loadBookings('declined', 'declinedList'));
+document.getElementById('refreshAll').addEventListener('click', () => loadBookings(null, 'allList'));
+
+// ── UPDATE STATUS ─────────────────────────────────────────
+async function updateStatus(id, newStatus) {
+  try {
+    const { error } = await sb.from('bookings').update({ status: newStatus }).eq('id', id);
+    if (error) throw error;
+    showToast('Booking ' + newStatus + '.', 'success');
+    loadAll();
+  } catch(err) {
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+
+// ── DELETE BOOKING ────────────────────────────────────────
+async function deleteBooking(id) {
+  if (!confirm('Delete this booking? This cannot be undone.')) return;
+  try {
+    const { error } = await sb.from('bookings').delete().eq('id', id);
+    if (error) throw error;
+    document.getElementById('bc-' + id)?.remove();
+    showToast('Booking deleted.', 'success');
+    loadAll();
+  } catch(err) {
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+
+// ── SETTINGS ─────────────────────────────────────────────
+async function loadSettings() {
+  try {
+    const { data } = await sb.from('site_settings').select('key, value');
+    if (!data) return;
+    const s = Object.fromEntries(data.map(r => [r.key, r.value]));
+    const set = (id, key) => { const el = document.getElementById(id); if (el && s[key] !== undefined) el.value = s[key]; };
+    set('s_phone', 'phone');
+    set('s_email', 'email');
+    set('s_instagram', 'instagram');
+    set('s_venmo', 'venmo');
+    set('s_hourly_rate', 'hourly_rate');
+    set('s_hourly_minimum', 'hourly_minimum');
+    set('s_pickup_fee', 'pickup_fee');
+    set('s_per_mile_rate', 'per_mile_rate');
+    set('s_tagline', 'tagline');
+  } catch(err) {
+    showToast('Could not load settings.', 'error');
+  }
+}
+
+async function upsertSettings(pairs, feedbackId, btnId) {
+  const btn = document.getElementById(btnId);
+  btn.disabled = true;
+  try {
+    const rows = pairs.map(([key, val]) => ({ key, value: val }));
+    const { error } = await sb.from('site_settings').upsert(rows, { onConflict: 'key' });
+    if (error) throw error;
+    const fb = document.getElementById(feedbackId);
+    fb.classList.add('show');
+    setTimeout(() => fb.classList.remove('show'), 3000);
+    showToast('Settings saved.', 'success');
+  } catch(err) {
+    showToast('Save failed: ' + err.message, 'error');
+  }
+  btn.disabled = false;
+}
+
+document.getElementById('saveContact').addEventListener('click', () => {
+  upsertSettings([
+    ['phone', document.getElementById('s_phone').value.trim()],
+    ['email', document.getElementById('s_email').value.trim()],
+    ['instagram', document.getElementById('s_instagram').value.trim()],
+    ['venmo', document.getElementById('s_venmo').value.trim()],
+  ], 'contactFeedback', 'saveContact');
+});
+
+document.getElementById('savePricing').addEventListener('click', () => {
+  upsertSettings([
+    ['hourly_rate', document.getElementById('s_hourly_rate').value.trim()],
+    ['hourly_minimum', document.getElementById('s_hourly_minimum').value.trim()],
+    ['pickup_fee', document.getElementById('s_pickup_fee').value.trim()],
+    ['per_mile_rate', document.getElementById('s_per_mile_rate').value.trim()],
+  ], 'pricingFeedback', 'savePricing');
+});
+
+document.getElementById('saveBrand').addEventListener('click', () => {
+  upsertSettings([
+    ['tagline', document.getElementById('s_tagline').value.trim()],
+  ], 'brandFeedback', 'saveBrand');
+});
+
+// ── INIT ──────────────────────────────────────────────────
+checkLogin();
+</script>
+</body>
+</html>
