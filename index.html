@@ -36,7 +36,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2.5rem;height:68px
 nav.scrolled{background:rgba(8,8,8,0.97);backdrop-filter:blur(12px);border-bottom-color:var(--border)}
 .nav-logo{font-family:var(--font-display);font-size:1.55rem;letter-spacing:0.12em;color:#fff;display:flex;align-items:center;gap:0.6rem}
 .nav-logo span{color:var(--accent)}
-.nav-logo-img{width:38px;height:38px;object-fit:contain;border-radius:50%;flex-shrink:0;filter:brightness(0) invert(1);opacity:0.9}
+.nav-logo-img{width:38px;height:38px;object-fit:cover;border-radius:50%;flex-shrink:0;filter:brightness(0) invert(1);background:#fff;padding:2px}
 .nav-links{display:flex;gap:2.2rem;align-items:center}
 .nav-links a{font-size:0.72rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(240,240,240,0.7);transition:color var(--transition)}
 .nav-links a:hover{color:#fff}
@@ -162,7 +162,7 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="index.html" class="nav-logo"><img src="Gemini_Generated_Image_cgf1cicgf1cicgf1.jpg" alt="SZN Sprinters logo" class="nav-logo-img">SZN<span>&nbsp;</span>SPRINTERS</a>
+  <a href="index.html" class="nav-logo"><img src="logo.jpg" alt="SZN Sprinters logo" class="nav-logo-img">SZN<span>&nbsp;</span>SPRINTERS</a>
   <div class="nav-links">
     <a href="#services">Services</a>
     <a href="#pricing">Pricing</a>
@@ -336,9 +336,9 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
       <span class="contact-card-icon">✉️</span>
       <span class="contact-card-text" id="emailDisplay">—</span>
     </a>
-    <a href="https://www.instagram.com/sznsprinter/" target="_blank" rel="noopener" class="contact-card">
+    <a href="https://www.instagram.com/sznsprinter/" target="_blank" rel="noopener" class="contact-card" style="border-color:rgba(200,169,110,0.4)">
       <span class="contact-card-icon">📷</span>
-      <span class="contact-card-text">@sznsprinter</span>
+      <span class="contact-card-text">@sznsprinter — Follow on Instagram</span>
     </a>
     <a href="#" class="contact-card" id="venmoCard" style="display:none">
       <span class="contact-card-icon">💳</span>

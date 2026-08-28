@@ -7,137 +7,143 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #080808;
-  --bg-card: #0f0f0f;
-  --bg-input: #141414;
-  --bg-hover: #181818;
-  --sidebar: #0a0a0a;
-  --text: #f0f0f0;
-  --text-muted: #686868;
-  --text-dim: #333;
-  --accent: #c8a96e;
-  --accent-dark: #a88a52;
-  --border: #1c1c1c;
-  --border-light: #242424;
-  --pending: #e8a93a;
-  --confirmed: #4caf6e;
-  --declined: #e05555;
-  --font-display: 'Bebas Neue', sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
-  --radius: 4px;
-  --transition: 0.2s ease;
-}
+:root{--bg:#080808;--bg-card:#0f0f0f;--bg-input:#141414;--bg-hover:#181818;--sidebar:#090909;--text:#f0f0f0;--text-muted:#686868;--text-dim:#333;--accent:#c8a96e;--accent-dark:#a88a52;--border:#1e1e1e;--border-light:#2a2a2a;--pending:#e8a93a;--confirmed:#4caf6e;--declined:#e05555;--font-display:'Bebas Neue',sans-serif;--font-body:'Inter',system-ui,sans-serif;--radius:4px;--transition:0.2s ease}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 button{cursor:pointer;font-family:inherit}
 input,select,textarea{font-family:inherit}
 
-/* ── LOGIN SCREEN ───────────────────────────────────────── */
+/* LOGIN */
 #loginScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000;padding:1.5rem}
 #loginScreen.hidden{display:none}
 .login-box{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:3rem 2.5rem;width:100%;max-width:380px}
-.login-logo{font-family:var(--font-display);font-size:1.2rem;letter-spacing:0.15em;color:rgba(240,240,240,0.4);margin-bottom:2.5rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:0.6rem}
-.login-logo img{width:56px;height:56px;object-fit:contain;border-radius:50%;filter:brightness(0) invert(1);opacity:0.5}
+.login-logo{display:flex;flex-direction:column;align-items:center;gap:0.6rem;margin-bottom:2.5rem}
+.login-logo img{width:56px;height:56px;object-fit:cover;border-radius:50%;filter:brightness(0) invert(1);background:#fff;padding:2px}
+.login-logo span{font-family:var(--font-display);font-size:1.2rem;letter-spacing:0.15em;color:rgba(240,240,240,0.4)}
 .login-title{font-family:var(--font-display);font-size:2rem;letter-spacing:0.06em;color:#fff;margin-bottom:0.4rem}
 .login-sub{font-size:0.82rem;color:var(--text-muted);margin-bottom:2rem}
-.login-field{margin-bottom:1.2rem}
-.login-field label{display:block;font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.45rem}
-.login-field input{width:100%;background:var(--bg-input);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:0.9rem;padding:0.75rem 1rem;outline:none;transition:border-color var(--transition)}
-.login-field input:focus{border-color:var(--accent)}
+.lf{margin-bottom:1.2rem}
+.lf label{display:block;font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.45rem}
+.lf input{width:100%;background:var(--bg-input);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:0.9rem;padding:0.75rem 1rem;outline:none;transition:border-color var(--transition)}
+.lf input:focus{border-color:var(--accent)}
 .login-btn{width:100%;background:var(--accent);color:#080808;border:none;border-radius:var(--radius);font-size:0.78rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:0.9rem;cursor:pointer;margin-top:0.5rem;transition:background var(--transition)}
 .login-btn:hover{background:var(--accent-dark)}
 .login-error{font-size:0.78rem;color:#e05555;margin-top:0.8rem;min-height:1.2rem;text-align:center}
 
-/* ── MAIN LAYOUT ───────────────────────────────────────── */
+/* LAYOUT */
 #app{display:none;min-height:100vh}
 #app.show{display:grid;grid-template-columns:220px 1fr}
-@media(max-width:700px){#app.show{grid-template-columns:1fr;grid-template-rows:auto 1fr}}
+@media(max-width:700px){#app.show{grid-template-columns:1fr}}
 
 /* SIDEBAR */
-.sidebar{background:var(--sidebar);border-right:1px solid var(--border);height:100vh;position:sticky;top:0;display:flex;flex-direction:column;padding:2rem 0}
-@media(max-width:700px){.sidebar{height:auto;position:relative;padding:1rem 0;flex-direction:row;flex-wrap:wrap;align-items:center;border-right:none;border-bottom:1px solid var(--border)}}
-.sidebar-logo{font-family:var(--font-display);font-size:1rem;letter-spacing:0.15em;color:rgba(240,240,240,0.35);padding:0 1.5rem 2rem;flex-shrink:0}
-@media(max-width:700px){.sidebar-logo{padding:0.5rem 1rem;font-size:0.85rem;width:100%;padding-bottom:0.5rem}}
-.sidebar-nav{display:flex;flex-direction:column;gap:2px;flex:1}
-@media(max-width:700px){.sidebar-nav{flex-direction:row;flex-wrap:wrap;padding:0.5rem;gap:4px;width:100%}}
-.sidebar-link{display:flex;align-items:center;gap:0.7rem;padding:0.7rem 1.5rem;font-size:0.78rem;font-weight:500;letter-spacing:0.07em;color:var(--text-muted);cursor:pointer;transition:color var(--transition),background var(--transition);user-select:none;border:none;background:none;width:100%;text-align:left}
+.sidebar{background:var(--sidebar);border-right:1px solid var(--border);height:100vh;position:sticky;top:0;display:flex;flex-direction:column;padding:1.5rem 0}
+@media(max-width:700px){.sidebar{height:auto;position:relative;padding:0.8rem 0}}
+.sidebar-logo{display:flex;align-items:center;gap:0.5rem;padding:0 1.2rem 1.5rem;font-family:var(--font-display);font-size:0.95rem;letter-spacing:0.14em;color:rgba(240,240,240,0.35);flex-shrink:0}
+.sidebar-logo img{width:26px;height:26px;border-radius:50%;object-fit:cover;filter:brightness(0) invert(1);background:#fff;padding:1px;flex-shrink:0}
+@media(max-width:700px){.sidebar-logo{padding:0.6rem 1rem 0.6rem;font-size:0.8rem}}
+.sidebar-nav{display:flex;flex-direction:column;gap:1px;flex:1}
+@media(max-width:700px){.sidebar-nav{flex-direction:row;flex-wrap:wrap;padding:0.4rem;gap:3px}}
+.sidebar-link{display:flex;align-items:center;gap:0.6rem;padding:0.65rem 1.2rem;font-size:0.77rem;font-weight:500;letter-spacing:0.06em;color:var(--text-muted);cursor:pointer;transition:color var(--transition),background var(--transition),border-color var(--transition);user-select:none;border:none;background:none;width:100%;text-align:left;border-right:2px solid transparent}
 .sidebar-link:hover{color:#fff;background:rgba(255,255,255,0.03)}
-.sidebar-link.active{color:#fff;background:rgba(200,169,110,0.08);border-right:2px solid var(--accent)}
-@media(max-width:700px){.sidebar-link{padding:0.5rem 0.8rem;font-size:0.72rem;border-radius:var(--radius);width:auto;border-right:none}}
-.sidebar-link.active{border-right:none}
-@media(max-width:700px){.sidebar-link.active{background:rgba(200,169,110,0.12)}}
-.sidebar-count{margin-left:auto;background:var(--pending);color:#080808;font-size:0.65rem;font-weight:700;padding:0.15rem 0.45rem;border-radius:100px;min-width:18px;text-align:center}
+.sidebar-link.active{color:#fff;background:rgba(200,169,110,0.07);border-right-color:var(--accent)}
+@media(max-width:700px){.sidebar-link{padding:0.45rem 0.7rem;font-size:0.72rem;border-radius:var(--radius);width:auto;border-right:none}}
+.sidebar-count{margin-left:auto;background:var(--pending);color:#080808;font-size:0.62rem;font-weight:700;padding:0.12rem 0.4rem;border-radius:100px;min-width:18px;text-align:center}
 .sidebar-count.hidden{display:none}
-.sidebar-footer{padding:1.5rem;margin-top:auto}
-@media(max-width:700px){.sidebar-footer{padding:0.5rem 1rem;margin-top:0;width:100%}}
-.logout-btn{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);background:none;border:1px solid var(--border);border-radius:var(--radius);padding:0.45rem 0.9rem;cursor:pointer;transition:color var(--transition),border-color var(--transition)}
+.sidebar-footer{padding:1.2rem;margin-top:auto;display:flex;flex-direction:column;gap:0.5rem}
+@media(max-width:700px){.sidebar-footer{flex-direction:row;padding:0.5rem 1rem;width:100%}}
+.back-btn{font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);background:rgba(200,169,110,0.08);border:1px solid rgba(200,169,110,0.25);border-radius:var(--radius);padding:0.5rem 0.9rem;cursor:pointer;transition:all var(--transition);text-align:center;display:block}
+.back-btn:hover{background:rgba(200,169,110,0.15);border-color:var(--accent)}
+.logout-btn{font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);background:none;border:1px solid var(--border);border-radius:var(--radius);padding:0.5rem 0.9rem;cursor:pointer;transition:all var(--transition);text-align:center}
 .logout-btn:hover{color:var(--text-muted);border-color:var(--border-light)}
 
-/* MAIN CONTENT */
-.main{padding:2.5rem;overflow-y:auto;min-height:0}
+/* MAIN */
+.main{padding:2.5rem;overflow-y:auto}
 @media(max-width:700px){.main{padding:1.2rem}}
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.8rem;flex-wrap:wrap;gap:1rem}
 .section-title{font-family:var(--font-display);font-size:1.8rem;letter-spacing:0.07em;color:#fff}
-.refresh-btn{background:none;border:1px solid var(--border);color:var(--text-muted);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 1rem;border-radius:var(--radius);cursor:pointer;transition:all var(--transition)}
+.refresh-btn{background:none;border:1px solid var(--border);color:var(--text-muted);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.45rem 0.9rem;border-radius:var(--radius);cursor:pointer;transition:all var(--transition)}
 .refresh-btn:hover{border-color:var(--accent);color:var(--accent)}
 
 /* TABS */
 .tab-view{display:none}
 .tab-view.active{display:block}
 
-/* BOOKINGS TABLE/CARDS */
-.bookings-list{display:flex;flex-direction:column;gap:0.75rem}
-.booking-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.6rem;transition:border-color var(--transition)}
+/* BOOKING CARDS */
+.bookings-list{display:flex;flex-direction:column;gap:0.7rem}
+.booking-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem 1.5rem;transition:border-color var(--transition)}
 .booking-card:hover{border-color:var(--border-light)}
-.bc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:0.8rem}
+.bc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:0.75rem}
 .bc-name{font-size:1rem;font-weight:600;color:#fff}
-.bc-service{font-size:0.78rem;color:var(--accent);font-weight:500;margin-top:0.2rem;text-transform:uppercase;letter-spacing:0.06em}
-.bc-status{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.75rem;border-radius:100px;flex-shrink:0}
-.bc-status.pending{background:rgba(232,169,58,0.12);color:var(--pending);border:1px solid rgba(232,169,58,0.25)}
-.bc-status.confirmed{background:rgba(76,175,110,0.1);color:var(--confirmed);border:1px solid rgba(76,175,110,0.2)}
-.bc-status.declined{background:rgba(224,85,85,0.1);color:var(--declined);border:1px solid rgba(224,85,85,0.2)}
-.bc-meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0.5rem 1.5rem;margin-bottom:1rem}
+.bc-service{font-size:0.75rem;color:var(--accent);font-weight:500;margin-top:0.15rem;text-transform:uppercase;letter-spacing:0.06em}
+.bc-status{display:inline-flex;align-items:center;font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.28rem 0.7rem;border-radius:100px;flex-shrink:0}
+.bc-status.pending{background:rgba(232,169,58,0.1);color:var(--pending);border:1px solid rgba(232,169,58,0.22)}
+.bc-status.confirmed{background:rgba(76,175,110,0.08);color:var(--confirmed);border:1px solid rgba(76,175,110,0.18)}
+.bc-status.declined{background:rgba(224,85,85,0.08);color:var(--declined);border:1px solid rgba(224,85,85,0.18)}
+.bc-meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0.4rem 1.2rem;margin-bottom:0.9rem}
 .bc-meta-item{font-size:0.8rem;color:var(--text-muted)}
-.bc-meta-item strong{color:rgba(240,240,240,0.75);font-weight:500;display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.15rem}
-.bc-notes{font-size:0.82rem;color:var(--text-muted);background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:3px;padding:0.7rem 1rem;margin-bottom:1rem;white-space:pre-wrap}
-.bc-actions{display:flex;gap:0.5rem;flex-wrap:wrap}
-.bc-btn{border:none;border-radius:var(--radius);font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.45rem 1rem;cursor:pointer;transition:all var(--transition)}
-.bc-btn.confirm{background:rgba(76,175,110,0.12);color:var(--confirmed);border:1px solid rgba(76,175,110,0.25)}
+.bc-meta-item strong{color:rgba(240,240,240,0.65);font-weight:500;display:block;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.1rem}
+.bc-meta-item a{color:var(--accent)}
+.bc-notes{font-size:0.8rem;color:var(--text-muted);background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:3px;padding:0.6rem 0.9rem;margin-bottom:0.9rem;white-space:pre-wrap}
+.bc-actions{display:flex;gap:0.45rem;flex-wrap:wrap;align-items:center}
+.bc-btn{border:none;border-radius:var(--radius);font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:0.42rem 0.9rem;cursor:pointer;transition:all var(--transition)}
+.bc-btn.confirm{background:rgba(76,175,110,0.1);color:var(--confirmed);border:1px solid rgba(76,175,110,0.22)}
 .bc-btn.confirm:hover{background:rgba(76,175,110,0.2)}
-.bc-btn.decline{background:rgba(224,85,85,0.1);color:var(--declined);border:1px solid rgba(224,85,85,0.2)}
-.bc-btn.decline:hover{background:rgba(224,85,85,0.18)}
-.bc-btn.delete{background:rgba(255,255,255,0.04);color:var(--text-muted);border:1px solid var(--border)}
-.bc-btn.delete:hover{color:var(--declined);border-color:rgba(224,85,85,0.3)}
-.bc-date-sent{font-size:0.7rem;color:var(--text-dim);margin-left:auto;align-self:center}
-.empty-state{text-align:center;padding:4rem 2rem;color:var(--text-muted);font-size:0.9rem}
-.loading-state{text-align:center;padding:3rem;color:var(--text-muted);font-size:0.85rem}
+.bc-btn.decline{background:rgba(224,85,85,0.08);color:var(--declined);border:1px solid rgba(224,85,85,0.18)}
+.bc-btn.decline:hover{background:rgba(224,85,85,0.16)}
+.bc-btn.reset{background:rgba(255,255,255,0.04);color:var(--text-muted);border:1px solid var(--border)}
+.bc-btn.reset:hover{color:#fff;border-color:var(--border-light)}
+.bc-btn.del{background:none;color:var(--text-dim);border:1px solid var(--border);font-size:0.68rem}
+.bc-btn.del:hover{color:var(--declined);border-color:rgba(224,85,85,0.3)}
+.bc-date-sent{font-size:0.68rem;color:var(--text-dim);margin-left:auto}
+.empty-state{text-align:center;padding:3.5rem 2rem;color:var(--text-muted);font-size:0.88rem}
+.loading-state{text-align:center;padding:2.5rem;color:var(--text-muted);font-size:0.82rem}
+
+/* BLOCKED DATES */
+.block-form{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.8rem;margin-bottom:2rem}
+.block-form-title{font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:1.2rem}
+.block-row{display:grid;grid-template-columns:1fr 1fr auto;gap:0.8rem;align-items:end;flex-wrap:wrap}
+@media(max-width:600px){.block-row{grid-template-columns:1fr}}
+.bf{display:flex;flex-direction:column;gap:0.4rem}
+.bf label{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted)}
+.bf input,.bf select{background:var(--bg-input);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:0.88rem;padding:0.6rem 0.8rem;outline:none;transition:border-color var(--transition)}
+.bf input:focus,.bf select:focus{border-color:var(--accent)}
+.bf input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.5)}
+.bf select option{background:#111}
+.block-time-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-top:0.8rem}
+.block-time-row.hidden{display:none}
+.add-block-btn{background:var(--accent);color:#080808;border:none;border-radius:var(--radius);font-size:0.73rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.62rem 1.2rem;cursor:pointer;white-space:nowrap;transition:background var(--transition);align-self:flex-end}
+.add-block-btn:hover{background:var(--accent-dark)}
+.blocked-list{display:flex;flex-direction:column;gap:0.5rem}
+.blocked-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.blocked-item-info{}
+.blocked-item-date{font-size:0.9rem;font-weight:600;color:#fff}
+.blocked-item-detail{font-size:0.78rem;color:var(--text-muted);margin-top:0.2rem}
+.del-block-btn{background:rgba(224,85,85,0.08);color:var(--declined);border:1px solid rgba(224,85,85,0.18);border-radius:var(--radius);font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:0.35rem 0.75rem;cursor:pointer;transition:all var(--transition);flex-shrink:0}
+.del-block-btn:hover{background:rgba(224,85,85,0.16)}
 
 /* SETTINGS */
-.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
 @media(max-width:600px){.settings-grid{grid-template-columns:1fr}}
-.settings-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.8rem}
-.settings-card-title{font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:1.4rem}
-.settings-field{margin-bottom:1.2rem}
-.settings-field:last-child{margin-bottom:0}
-.settings-field label{display:block;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.4rem}
-.settings-field input,.settings-field textarea{width:100%;background:var(--bg-input);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:0.88rem;padding:0.65rem 0.9rem;outline:none;transition:border-color var(--transition)}
-.settings-field input:focus,.settings-field textarea:focus{border-color:var(--accent)}
-.settings-field .hint{font-size:0.72rem;color:var(--text-muted);margin-top:0.35rem}
-.settings-save-btn{background:var(--accent);color:#080808;border:none;border-radius:var(--radius);font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.7rem 1.6rem;cursor:pointer;margin-top:1.5rem;transition:background var(--transition)}
-.settings-save-btn:hover{background:var(--accent-dark)}
-.settings-save-btn:disabled{opacity:0.5;cursor:not-allowed}
-.save-feedback{font-size:0.78rem;margin-left:1rem;color:var(--confirmed);display:inline;opacity:0;transition:opacity 0.3s}
-.save-feedback.show{opacity:1}
+.settings-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.6rem}
+.settings-card-title{font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:1.2rem}
+.sf{margin-bottom:1.1rem}
+.sf:last-of-type{margin-bottom:0}
+.sf label{display:block;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.38rem}
+.sf input{width:100%;background:var(--bg-input);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:0.88rem;padding:0.62rem 0.85rem;outline:none;transition:border-color var(--transition)}
+.sf input:focus{border-color:var(--accent)}
+.sf .hint{font-size:0.7rem;color:var(--text-muted);margin-top:0.3rem}
+.save-btn{background:var(--accent);color:#080808;border:none;border-radius:var(--radius);font-size:0.73rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.65rem 1.4rem;cursor:pointer;margin-top:1.3rem;transition:background var(--transition)}
+.save-btn:hover{background:var(--accent-dark)}
+.save-btn:disabled{opacity:0.5;cursor:not-allowed}
+.save-fb{font-size:0.75rem;margin-left:0.8rem;color:var(--confirmed);opacity:0;transition:opacity 0.3s}
+.save-fb.show{opacity:1}
 
 /* TOAST */
-.toast{position:fixed;bottom:1.5rem;right:1.5rem;max-width:360px;background:#1a1a1a;border:1px solid;border-radius:var(--radius);padding:1rem 1.3rem;font-size:0.85rem;z-index:500;transform:translateY(10px);opacity:0;transition:all 0.3s ease;pointer-events:none}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;max-width:350px;background:#1a1a1a;border:1px solid;border-radius:var(--radius);padding:1rem 1.2rem;font-size:0.84rem;z-index:500;transform:translateY(8px);opacity:0;transition:all 0.28s ease;pointer-events:none}
 .toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
 .toast.success{border-color:var(--confirmed);color:var(--confirmed)}
 .toast.error{border-color:var(--declined);color:var(--declined)}
-
-@media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms !important;transition-duration:0.01ms !important}}
 </style>
 </head>
 <body>
@@ -145,17 +151,14 @@ input,select,textarea{font-family:inherit}
 <!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
-    <div class="login-logo"><img src="Gemini_Generated_Image_cgf1cicgf1cicgf1.jpg" alt="SZN Sprinters">SZN SPRINTERS</div>
+    <div class="login-logo">
+      <img src="logo.jpg" alt="SZN Sprinters">
+      <span>SZN SPRINTERS</span>
+    </div>
     <div class="login-title">ADMIN</div>
     <p class="login-sub">Sign in to manage bookings and settings.</p>
-    <div class="login-field">
-      <label>Username</label>
-      <input type="text" id="loginUser" placeholder="Username" autocomplete="username">
-    </div>
-    <div class="login-field">
-      <label>Password</label>
-      <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password">
-    </div>
+    <div class="lf"><label>Username</label><input type="text" id="loginUser" autocomplete="username"></div>
+    <div class="lf"><label>Password</label><input type="password" id="loginPass" autocomplete="current-password"></div>
     <button class="login-btn" id="loginBtn">Sign In</button>
     <div class="login-error" id="loginError"></div>
   </div>
@@ -163,32 +166,31 @@ input,select,textarea{font-family:inherit}
 
 <!-- APP -->
 <div id="app">
-  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sidebar-logo" style="display:flex;align-items:center;gap:0.5rem"><img src="Gemini_Generated_Image_cgf1cicgf1cicgf1.jpg" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:contain;opacity:0.5">SZN SPRINTERS</div>
+    <div class="sidebar-logo">
+      <img src="logo.jpg" alt="">
+      SZN SPRINTERS
+    </div>
     <nav class="sidebar-nav">
-      <button class="sidebar-link active" data-tab="pending">
-        ⏳ Pending
-        <span class="sidebar-count" id="pendingCount">0</span>
-      </button>
+      <button class="sidebar-link active" data-tab="pending">⏳ Pending <span class="sidebar-count" id="pendingCount">0</span></button>
       <button class="sidebar-link" data-tab="confirmed">✓ Confirmed</button>
       <button class="sidebar-link" data-tab="declined">✕ Declined</button>
       <button class="sidebar-link" data-tab="all">≡ All Bookings</button>
+      <button class="sidebar-link" data-tab="blocked">🚫 Block Dates</button>
       <button class="sidebar-link" data-tab="settings">⚙ Settings</button>
     </nav>
     <div class="sidebar-footer">
+      <a href="index.html" class="back-btn">← Back to Site</a>
       <button class="logout-btn" id="logoutBtn">Log Out</button>
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="main">
-
     <!-- PENDING -->
     <div class="tab-view active" id="tab-pending">
       <div class="section-header">
         <div class="section-title">PENDING</div>
-        <button class="refresh-btn" id="refreshPending">↻ Refresh</button>
+        <button class="refresh-btn" onclick="loadBookings('pending','pendingList')">↻ Refresh</button>
       </div>
       <div class="bookings-list" id="pendingList"><div class="loading-state">Loading...</div></div>
     </div>
@@ -197,7 +199,7 @@ input,select,textarea{font-family:inherit}
     <div class="tab-view" id="tab-confirmed">
       <div class="section-header">
         <div class="section-title">CONFIRMED</div>
-        <button class="refresh-btn" id="refreshConfirmed">↻ Refresh</button>
+        <button class="refresh-btn" onclick="loadBookings('confirmed','confirmedList')">↻ Refresh</button>
       </div>
       <div class="bookings-list" id="confirmedList"><div class="loading-state">Loading...</div></div>
     </div>
@@ -206,7 +208,7 @@ input,select,textarea{font-family:inherit}
     <div class="tab-view" id="tab-declined">
       <div class="section-header">
         <div class="section-title">DECLINED</div>
-        <button class="refresh-btn" id="refreshDeclined">↻ Refresh</button>
+        <button class="refresh-btn" onclick="loadBookings('declined','declinedList')">↻ Refresh</button>
       </div>
       <div class="bookings-list" id="declinedList"><div class="loading-state">Loading...</div></div>
     </div>
@@ -215,74 +217,75 @@ input,select,textarea{font-family:inherit}
     <div class="tab-view" id="tab-all">
       <div class="section-header">
         <div class="section-title">ALL BOOKINGS</div>
-        <button class="refresh-btn" id="refreshAll">↻ Refresh</button>
+        <button class="refresh-btn" onclick="loadBookings(null,'allList')">↻ Refresh</button>
       </div>
       <div class="bookings-list" id="allList"><div class="loading-state">Loading...</div></div>
     </div>
 
+    <!-- BLOCK DATES -->
+    <div class="tab-view" id="tab-blocked">
+      <div class="section-header"><div class="section-title">BLOCK DATES</div></div>
+      <div class="block-form">
+        <div class="block-form-title">Add Blocked Date / Time</div>
+        <div class="block-row">
+          <div class="bf">
+            <label>Date</label>
+            <input type="date" id="blockDate">
+          </div>
+          <div class="bf">
+            <label>Block Type</label>
+            <select id="blockType" onchange="toggleBlockTime()">
+              <option value="full">Full Day</option>
+              <option value="partial">Specific Time Range</option>
+            </select>
+          </div>
+          <button class="add-block-btn" onclick="addBlock()">+ Block Date</button>
+        </div>
+        <div class="block-time-row hidden" id="blockTimeRow">
+          <div class="bf">
+            <label>Start Time</label>
+            <input type="time" id="blockStart" min="06:00" max="22:00">
+          </div>
+          <div class="bf">
+            <label>End Time</label>
+            <input type="time" id="blockEnd" min="06:00" max="22:00">
+          </div>
+        </div>
+        <div class="bf" style="margin-top:0.8rem">
+          <label>Reason (optional)</label>
+          <input type="text" id="blockReason" placeholder="e.g. Personal day, Holiday...">
+        </div>
+      </div>
+      <div class="blocked-list" id="blockedList"><div class="loading-state">Loading...</div></div>
+    </div>
+
     <!-- SETTINGS -->
     <div class="tab-view" id="tab-settings">
-      <div class="section-header">
-        <div class="section-title">SETTINGS</div>
-      </div>
+      <div class="section-header"><div class="section-title">SETTINGS</div></div>
       <div class="settings-grid">
-        <!-- CONTACT INFO -->
         <div class="settings-card">
           <div class="settings-card-title">Contact Info</div>
-          <div class="settings-field">
-            <label>Phone Number</label>
-            <input type="tel" id="s_phone" placeholder="(555) 000-0000">
-          </div>
-          <div class="settings-field">
-            <label>Email Address</label>
-            <input type="email" id="s_email" placeholder="you@email.com">
-          </div>
-          <div class="settings-field">
-            <label>Instagram</label>
-            <input type="url" id="s_instagram" placeholder="https://instagram.com/sznsprinter">
-            <div class="hint">Full URL</div>
-          </div>
-          <div class="settings-field">
-            <label>Venmo Handle</label>
-            <input type="text" id="s_venmo" placeholder="sznsprinters (no @)">
-          </div>
-          <button class="settings-save-btn" id="saveContact">Save Contact Info</button>
-          <span class="save-feedback" id="contactFeedback">Saved ✓</span>
+          <div class="sf"><label>Phone Number</label><input type="tel" id="s_phone" placeholder="(555) 000-0000"></div>
+          <div class="sf"><label>Email Address</label><input type="email" id="s_email" placeholder="you@email.com"></div>
+          <div class="sf"><label>Instagram URL</label><input type="url" id="s_instagram" placeholder="https://instagram.com/sznsprinter"><div class="hint">Full URL</div></div>
+          <div class="sf"><label>Venmo Handle</label><input type="text" id="s_venmo" placeholder="no @ symbol"></div>
+          <button class="save-btn" id="saveContact" onclick="saveGroup('saveContact','contactFb',['phone','email','instagram','venmo'])">Save Contact</button>
+          <span class="save-fb" id="contactFb">Saved ✓</span>
         </div>
-
-        <!-- PRICING -->
         <div class="settings-card">
           <div class="settings-card-title">Pricing</div>
-          <div class="settings-field">
-            <label>Hourly Rate ($/hr)</label>
-            <input type="number" id="s_hourly_rate" placeholder="100" min="0">
-          </div>
-          <div class="settings-field">
-            <label>Hourly Minimum (hours)</label>
-            <input type="number" id="s_hourly_minimum" placeholder="2" min="1">
-          </div>
-          <div class="settings-field">
-            <label>Pickup Fee ($)</label>
-            <input type="number" id="s_pickup_fee" placeholder="40" min="0">
-          </div>
-          <div class="settings-field">
-            <label>Per Mile Rate ($/mi)</label>
-            <input type="number" id="s_per_mile_rate" placeholder="4" min="0">
-          </div>
-          <button class="settings-save-btn" id="savePricing">Save Pricing</button>
-          <span class="save-feedback" id="pricingFeedback">Saved ✓</span>
+          <div class="sf"><label>Hourly Rate ($/hr)</label><input type="number" id="s_hourly_rate" placeholder="100" min="0"></div>
+          <div class="sf"><label>Hourly Minimum (hours)</label><input type="number" id="s_hourly_minimum" placeholder="2" min="1"></div>
+          <div class="sf"><label>Pickup Fee ($)</label><input type="number" id="s_pickup_fee" placeholder="40" min="0"></div>
+          <div class="sf"><label>Per Mile Rate ($/mi)</label><input type="number" id="s_per_mile_rate" placeholder="4" min="0"></div>
+          <button class="save-btn" id="savePricing" onclick="saveGroup('savePricing','pricingFb',['hourly_rate','hourly_minimum','pickup_fee','per_mile_rate'])">Save Pricing</button>
+          <span class="save-fb" id="pricingFb">Saved ✓</span>
         </div>
-
-        <!-- TAGLINE -->
         <div class="settings-card" style="grid-column:1/-1">
           <div class="settings-card-title">Brand</div>
-          <div class="settings-field">
-            <label>Tagline / Quote</label>
-            <input type="text" id="s_tagline" placeholder="A different world of group travel.">
-            <div class="hint">Shown on homepage contact section</div>
-          </div>
-          <button class="settings-save-btn" id="saveBrand">Save Brand</button>
-          <span class="save-feedback" id="brandFeedback">Saved ✓</span>
+          <div class="sf"><label>Tagline</label><input type="text" id="s_tagline" placeholder="A different world of group travel."><div class="hint">Shown on homepage contact section</div></div>
+          <button class="save-btn" id="saveBrand" onclick="saveGroup('saveBrand','brandFb',['tagline'])">Save Brand</button>
+          <span class="save-fb" id="brandFb">Saved ✓</span>
         </div>
       </div>
     </div>
@@ -293,7 +296,6 @@ input,select,textarea{font-family:inherit}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ── CONFIG ────────────────────────────────────────────────
 const SUPABASE_URL = 'https://kglmpqkeblbltsitlovs.supabase.co';
 const SUPABASE_ANON = 'sb_publishable_I1l_xv_BtCjbHPmWkFR1SQ_o10qt5yn';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
@@ -302,46 +304,37 @@ const ADMIN_USER = 'sznsprinters';
 const ADMIN_PASS = 'sznsprinters123';
 
 // ── TOAST ─────────────────────────────────────────────────
-function showToast(msg, type = 'success') {
+function toast(msg, type = 'success') {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.className = 'toast show ' + type;
   clearTimeout(t._t);
-  t._t = setTimeout(() => t.classList.remove('show'), 4000);
+  t._t = setTimeout(() => t.classList.remove('show'), 4500);
 }
 
 // ── LOGIN ─────────────────────────────────────────────────
-const isLoggedIn = () => sessionStorage.getItem('szn_admin') === '1';
-
 function checkLogin() {
-  if (isLoggedIn()) {
-    document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('app').classList.add('show');
-    loadAll();
-  }
+  if (sessionStorage.getItem('szn_admin') === '1') showApp();
 }
-
-document.getElementById('loginBtn').addEventListener('click', doLogin);
-document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-
 function doLogin() {
   const u = document.getElementById('loginUser').value.trim();
   const p = document.getElementById('loginPass').value;
   if (u === ADMIN_USER && p === ADMIN_PASS) {
     sessionStorage.setItem('szn_admin', '1');
     document.getElementById('loginError').textContent = '';
-    document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('app').classList.add('show');
-    loadAll();
+    showApp();
   } else {
     document.getElementById('loginError').textContent = 'Incorrect username or password.';
   }
 }
-
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  sessionStorage.removeItem('szn_admin');
-  location.reload();
-});
+function showApp() {
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('app').classList.add('show');
+  loadAll();
+}
+document.getElementById('loginBtn').addEventListener('click', doLogin);
+document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('logoutBtn').addEventListener('click', () => { sessionStorage.removeItem('szn_admin'); location.reload(); });
 
 // ── TABS ──────────────────────────────────────────────────
 document.querySelectorAll('.sidebar-link[data-tab]').forEach(btn => {
@@ -349,63 +342,60 @@ document.querySelectorAll('.sidebar-link[data-tab]').forEach(btn => {
     document.querySelectorAll('.sidebar-link').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-    if (btn.dataset.tab === 'settings') loadSettings();
+    const tab = btn.dataset.tab;
+    document.getElementById('tab-' + tab).classList.add('active');
+    if (tab === 'settings') loadSettings();
+    if (tab === 'blocked') loadBlocked();
   });
 });
 
-// ── FORMAT HELPERS ────────────────────────────────────────
+// ── FORMAT ────────────────────────────────────────────────
 function fmtDate(d) {
   if (!d) return '—';
-  const dt = new Date(d + 'T00:00:00');
-  return dt.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+  return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
 }
 function fmtTime(t) {
   if (!t) return '—';
   const [h, m] = t.split(':');
-  const hr = parseInt(h), ampm = hr >= 12 ? 'PM' : 'AM';
-  return `${hr % 12 || 12}:${m} ${ampm}`;
+  const hr = parseInt(h);
+  return `${hr % 12 || 12}:${m} ${hr >= 12 ? 'PM' : 'AM'}`;
 }
 function fmtCreated(ts) {
   if (!ts) return '';
   return new Date(ts).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
 }
+function esc(s) { return (s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-// ── BOOKING CARD HTML ─────────────────────────────────────
-function bookingCard(b, showActions = true) {
-  const statusClass = b.status === 'confirmed' ? 'confirmed' : b.status === 'declined' ? 'declined' : 'pending';
-  const actions = showActions ? `
+// ── BOOKING CARD ──────────────────────────────────────────
+function bookingCard(b) {
+  const sc = b.status === 'confirmed' ? 'confirmed' : b.status === 'declined' ? 'declined' : 'pending';
+  return `<div class="booking-card" id="bc-${b.id}">
+    <div class="bc-top">
+      <div>
+        <div class="bc-name">${esc(b.name)}</div>
+        <div class="bc-service">${esc(b.service_type)}${b.billing_type ? ' · ' + esc(b.billing_type) : ''}</div>
+      </div>
+      <span class="bc-status ${sc}">${b.status}</span>
+    </div>
+    <div class="bc-meta">
+      <div class="bc-meta-item"><strong>Date</strong>${fmtDate(b.date)}</div>
+      <div class="bc-meta-item"><strong>Time</strong>${fmtTime(b.pickup_time)}</div>
+      <div class="bc-meta-item"><strong>Passengers</strong>${b.passengers ?? '—'}</div>
+      <div class="bc-meta-item"><strong>Phone</strong><a href="tel:${esc(b.phone)}">${esc(b.phone)}</a></div>
+      <div class="bc-meta-item"><strong>Email</strong><a href="mailto:${esc(b.email)}">${esc(b.email)}</a></div>
+      ${b.pickup_location ? `<div class="bc-meta-item"><strong>Pickup</strong>${esc(b.pickup_location)}</div>` : ''}
+      ${b.destination ? `<div class="bc-meta-item"><strong>Destination</strong>${esc(b.destination)}</div>` : ''}
+    </div>
+    ${b.notes ? `<div class="bc-notes">${esc(b.notes)}</div>` : ''}
     <div class="bc-actions">
       ${b.status !== 'confirmed' ? `<button class="bc-btn confirm" onclick="updateStatus('${b.id}','confirmed')">✓ Confirm</button>` : ''}
       ${b.status !== 'declined' ? `<button class="bc-btn decline" onclick="updateStatus('${b.id}','declined')">✕ Decline</button>` : ''}
-      ${b.status === 'confirmed' ? `<button class="bc-btn decline" onclick="updateStatus('${b.id}','pending')">↩ Reset to Pending</button>` : ''}
-      <button class="bc-btn delete" onclick="deleteBooking('${b.id}')">🗑 Delete</button>
+      ${b.status !== 'pending' ? `<button class="bc-btn reset" onclick="updateStatus('${b.id}','pending')">↩ Pending</button>` : ''}
+      <button class="bc-btn del" onclick="deleteBooking('${b.id}')">🗑 Delete</button>
       <span class="bc-date-sent">Submitted ${fmtCreated(b.created_at)}</span>
-    </div>` : '';
-
-  return `
-    <div class="booking-card" id="bc-${b.id}">
-      <div class="bc-top">
-        <div>
-          <div class="bc-name">${esc(b.name)}</div>
-          <div class="bc-service">${esc(b.service_type)}</div>
-        </div>
-        <span class="bc-status ${statusClass}">${b.status}</span>
-      </div>
-      <div class="bc-meta">
-        <div class="bc-meta-item"><strong>Date</strong>${fmtDate(b.date)}</div>
-        <div class="bc-meta-item"><strong>Time</strong>${fmtTime(b.pickup_time)}</div>
-        <div class="bc-meta-item"><strong>Passengers</strong>${b.passengers ?? '—'}</div>
-        <div class="bc-meta-item"><strong>Phone</strong><a href="tel:${esc(b.phone)}" style="color:var(--accent)">${esc(b.phone)}</a></div>
-        <div class="bc-meta-item"><strong>Email</strong><a href="mailto:${esc(b.email)}" style="color:var(--accent)">${esc(b.email)}</a></div>
-        ${b.pickup_location ? `<div class="bc-meta-item"><strong>Pickup</strong>${esc(b.pickup_location)}</div>` : ''}
-        ${b.destination ? `<div class="bc-meta-item"><strong>Destination</strong>${esc(b.destination)}</div>` : ''}
-      </div>
-      ${b.notes ? `<div class="bc-notes">${esc(b.notes)}</div>` : ''}
-      ${actions}
-    </div>`;
+    </div>
+  </div>`;
 }
-function esc(s) { return (s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ── LOAD BOOKINGS ─────────────────────────────────────────
 async function loadBookings(status, listId) {
@@ -416,127 +406,143 @@ async function loadBookings(status, listId) {
     if (status) q = q.eq('status', status);
     const { data, error } = await q;
     if (error) throw error;
-    if (!data || data.length === 0) {
-      el.innerHTML = '<div class="empty-state">No bookings found.</div>';
-      return;
-    }
-    el.innerHTML = data.map(b => bookingCard(b)).join('');
-    // Update pending count badge
+    if (!data || data.length === 0) { el.innerHTML = '<div class="empty-state">No bookings yet.</div>'; return; }
+    el.innerHTML = data.map(bookingCard).join('');
     if (!status) {
-      const cnt = data.filter(b => b.status === 'pending').length;
-      updatePendingBadge(cnt);
+      const n = data.filter(b => b.status === 'pending').length;
+      const badge = document.getElementById('pendingCount');
+      badge.textContent = n;
+      badge.classList.toggle('hidden', n === 0);
     }
   } catch(err) {
-    el.innerHTML = `<div class="empty-state" style="color:var(--declined)">Error loading bookings: ${err.message}</div>`;
+    el.innerHTML = `<div class="empty-state" style="color:var(--declined)">Error: ${err.message}<br><small style="color:var(--text-dim)">Make sure you ran the schema.sql in Supabase to add RLS policies.</small></div>`;
   }
 }
 
-function updatePendingBadge(n) {
-  const badge = document.getElementById('pendingCount');
-  badge.textContent = n;
-  badge.classList.toggle('hidden', n === 0);
-}
-
 async function loadAll() {
-  await loadBookings('pending', 'pendingList');
+  loadBookings('pending', 'pendingList');
   loadBookings('confirmed', 'confirmedList');
   loadBookings('declined', 'declinedList');
   loadBookings(null, 'allList');
 }
 
-// Refresh buttons
-document.getElementById('refreshPending').addEventListener('click', () => loadBookings('pending', 'pendingList'));
-document.getElementById('refreshConfirmed').addEventListener('click', () => loadBookings('confirmed', 'confirmedList'));
-document.getElementById('refreshDeclined').addEventListener('click', () => loadBookings('declined', 'declinedList'));
-document.getElementById('refreshAll').addEventListener('click', () => loadBookings(null, 'allList'));
-
-// ── UPDATE STATUS ─────────────────────────────────────────
-async function updateStatus(id, newStatus) {
+// ── UPDATE / DELETE ───────────────────────────────────────
+async function updateStatus(id, status) {
   try {
-    const { error } = await sb.from('bookings').update({ status: newStatus }).eq('id', id);
+    const { error } = await sb.from('bookings').update({ status }).eq('id', id);
     if (error) throw error;
-    showToast('Booking ' + newStatus + '.', 'success');
+    toast('Booking ' + status + '.', 'success');
     loadAll();
-  } catch(err) {
-    showToast('Error: ' + err.message, 'error');
-  }
+  } catch(err) { toast('Error: ' + err.message, 'error'); }
 }
-
-// ── DELETE BOOKING ────────────────────────────────────────
 async function deleteBooking(id) {
-  if (!confirm('Delete this booking? This cannot be undone.')) return;
+  if (!confirm('Delete this booking? Cannot be undone.')) return;
   try {
     const { error } = await sb.from('bookings').delete().eq('id', id);
     if (error) throw error;
     document.getElementById('bc-' + id)?.remove();
-    showToast('Booking deleted.', 'success');
-    loadAll();
+    toast('Deleted.', 'success');
+  } catch(err) { toast('Error: ' + err.message, 'error'); }
+}
+
+// ── BLOCKED DATES ─────────────────────────────────────────
+function toggleBlockTime() {
+  document.getElementById('blockTimeRow').classList.toggle('hidden', document.getElementById('blockType').value === 'full');
+}
+async function addBlock() {
+  const date = document.getElementById('blockDate').value;
+  const type = document.getElementById('blockType').value;
+  const reason = document.getElementById('blockReason').value.trim();
+  const start = document.getElementById('blockStart').value || null;
+  const end = document.getElementById('blockEnd').value || null;
+  if (!date) { toast('Pick a date.', 'error'); return; }
+  if (type === 'partial' && (!start || !end)) { toast('Enter start and end time.', 'error'); return; }
+  try {
+    const { error } = await sb.from('blocked_dates').insert({
+      date,
+      full_day: type === 'full',
+      start_time: type === 'partial' ? start : null,
+      end_time: type === 'partial' ? end : null,
+      reason: reason || null
+    });
+    if (error) throw error;
+    toast('Date blocked.', 'success');
+    document.getElementById('blockDate').value = '';
+    document.getElementById('blockReason').value = '';
+    document.getElementById('blockStart').value = '';
+    document.getElementById('blockEnd').value = '';
+    loadBlocked();
+  } catch(err) { toast('Error: ' + err.message, 'error'); }
+}
+async function loadBlocked() {
+  const el = document.getElementById('blockedList');
+  el.innerHTML = '<div class="loading-state">Loading...</div>';
+  try {
+    const { data, error } = await sb.from('blocked_dates').select('*').order('date', { ascending: true });
+    if (error) throw error;
+    if (!data || data.length === 0) { el.innerHTML = '<div class="empty-state">No blocked dates.</div>'; return; }
+    el.innerHTML = data.map(b => `
+      <div class="blocked-item">
+        <div class="blocked-item-info">
+          <div class="blocked-item-date">${fmtDate(b.date)}</div>
+          <div class="blocked-item-detail">${b.full_day ? 'Full day' : `${fmtTime(b.start_time)} – ${fmtTime(b.end_time)}`}${b.reason ? ' · ' + esc(b.reason) : ''}</div>
+        </div>
+        <button class="del-block-btn" onclick="deleteBlock('${b.id}')">Remove</button>
+      </div>`).join('');
   } catch(err) {
-    showToast('Error: ' + err.message, 'error');
+    el.innerHTML = `<div class="empty-state" style="color:var(--declined)">Error: ${err.message}<br><small style="color:var(--text-dim)">Run the updated schema.sql to create the blocked_dates table.</small></div>`;
   }
+}
+async function deleteBlock(id) {
+  try {
+    const { error } = await sb.from('blocked_dates').delete().eq('id', id);
+    if (error) throw error;
+    document.querySelector(`[onclick="deleteBlock('${id}')"]`)?.closest('.blocked-item')?.remove();
+    toast('Removed.', 'success');
+  } catch(err) { toast('Error: ' + err.message, 'error'); }
 }
 
 // ── SETTINGS ─────────────────────────────────────────────
+const SETTING_IDS = {
+  phone:'s_phone', email:'s_email', instagram:'s_instagram', venmo:'s_venmo',
+  hourly_rate:'s_hourly_rate', hourly_minimum:'s_hourly_minimum',
+  pickup_fee:'s_pickup_fee', per_mile_rate:'s_per_mile_rate', tagline:'s_tagline'
+};
+
 async function loadSettings() {
   try {
-    const { data } = await sb.from('site_settings').select('key, value');
+    const { data, error } = await sb.from('site_settings').select('key, value');
+    if (error) throw error;
     if (!data) return;
-    const s = Object.fromEntries(data.map(r => [r.key, r.value]));
-    const set = (id, key) => { const el = document.getElementById(id); if (el && s[key] !== undefined) el.value = s[key]; };
-    set('s_phone', 'phone');
-    set('s_email', 'email');
-    set('s_instagram', 'instagram');
-    set('s_venmo', 'venmo');
-    set('s_hourly_rate', 'hourly_rate');
-    set('s_hourly_minimum', 'hourly_minimum');
-    set('s_pickup_fee', 'pickup_fee');
-    set('s_per_mile_rate', 'per_mile_rate');
-    set('s_tagline', 'tagline');
-  } catch(err) {
-    showToast('Could not load settings.', 'error');
-  }
+    data.forEach(r => {
+      const id = SETTING_IDS[r.key];
+      if (id) document.getElementById(id).value = r.value;
+    });
+  } catch(err) { toast('Could not load settings: ' + err.message, 'error'); }
 }
 
-async function upsertSettings(pairs, feedbackId, btnId) {
+async function saveGroup(btnId, fbId, keys) {
   const btn = document.getElementById(btnId);
   btn.disabled = true;
   try {
-    const rows = pairs.map(([key, val]) => ({ key, value: val }));
-    const { error } = await sb.from('site_settings').upsert(rows, { onConflict: 'key' });
-    if (error) throw error;
-    const fb = document.getElementById(feedbackId);
+    const rows = keys.map(key => {
+      const id = SETTING_IDS[key];
+      return { key, value: document.getElementById(id).value.trim() };
+    });
+    // Upsert each row individually to avoid conflicts
+    for (const row of rows) {
+      const { error } = await sb.from('site_settings').upsert(row, { onConflict: 'key' });
+      if (error) throw error;
+    }
+    const fb = document.getElementById(fbId);
     fb.classList.add('show');
     setTimeout(() => fb.classList.remove('show'), 3000);
-    showToast('Settings saved.', 'success');
+    toast('Saved! Changes now live on the site.', 'success');
   } catch(err) {
-    showToast('Save failed: ' + err.message, 'error');
+    toast('Save failed: ' + err.message + ' — Run schema.sql in Supabase first.', 'error');
   }
   btn.disabled = false;
 }
-
-document.getElementById('saveContact').addEventListener('click', () => {
-  upsertSettings([
-    ['phone', document.getElementById('s_phone').value.trim()],
-    ['email', document.getElementById('s_email').value.trim()],
-    ['instagram', document.getElementById('s_instagram').value.trim()],
-    ['venmo', document.getElementById('s_venmo').value.trim()],
-  ], 'contactFeedback', 'saveContact');
-});
-
-document.getElementById('savePricing').addEventListener('click', () => {
-  upsertSettings([
-    ['hourly_rate', document.getElementById('s_hourly_rate').value.trim()],
-    ['hourly_minimum', document.getElementById('s_hourly_minimum').value.trim()],
-    ['pickup_fee', document.getElementById('s_pickup_fee').value.trim()],
-    ['per_mile_rate', document.getElementById('s_per_mile_rate').value.trim()],
-  ], 'pricingFeedback', 'savePricing');
-});
-
-document.getElementById('saveBrand').addEventListener('click', () => {
-  upsertSettings([
-    ['tagline', document.getElementById('s_tagline').value.trim()],
-  ], 'brandFeedback', 'saveBrand');
-});
 
 // ── INIT ──────────────────────────────────────────────────
 checkLogin();
