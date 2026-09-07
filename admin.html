@@ -274,11 +274,12 @@ input,select,textarea{font-family:inherit}
         </div>
         <div class="settings-card">
           <div class="settings-card-title">Pricing</div>
-          <div class="sf"><label>Hourly Rate ($/hr)</label><input type="number" id="s_hourly_rate" placeholder="100" min="0"></div>
+          <div class="sf"><label>Hourly Rate ($/hr)</label><input type="number" id="s_hourly_rate" placeholder="150" min="0"></div>
           <div class="sf"><label>Hourly Minimum (hours)</label><input type="number" id="s_hourly_minimum" placeholder="2" min="1"></div>
-          <div class="sf"><label>Pickup Fee ($)</label><input type="number" id="s_pickup_fee" placeholder="40" min="0"></div>
-          <div class="sf"><label>Per Mile Rate ($/mi)</label><input type="number" id="s_per_mile_rate" placeholder="4" min="0"></div>
-          <button class="save-btn" id="savePricing" onclick="saveGroup('savePricing','pricingFb',['hourly_rate','hourly_minimum','pickup_fee','per_mile_rate'])">Save Pricing</button>
+          <div class="sf"><label>Pickup Fee ($)</label><input type="number" id="s_pickup_fee" placeholder="50" min="0"></div>
+          <div class="sf"><label>Per Mile Rate ($/mi)</label><input type="number" id="s_per_mile_rate" placeholder="5" min="0"></div>
+          <div class="sf"><label>Max Passengers</label><input type="number" id="s_max_passengers" placeholder="11" min="1" max="20"><div class="hint">Max passengers allowed per booking</div></div>
+          <button class="save-btn" id="savePricing" onclick="saveGroup('savePricing','pricingFb',['hourly_rate','hourly_minimum','pickup_fee','per_mile_rate','max_passengers'])">Save Pricing</button>
           <span class="save-fb" id="pricingFb">Saved ✓</span>
         </div>
         <div class="settings-card" style="grid-column:1/-1">
@@ -506,7 +507,8 @@ async function deleteBlock(id) {
 const SETTING_IDS = {
   phone:'s_phone', email:'s_email', instagram:'s_instagram', venmo:'s_venmo',
   hourly_rate:'s_hourly_rate', hourly_minimum:'s_hourly_minimum',
-  pickup_fee:'s_pickup_fee', per_mile_rate:'s_per_mile_rate', tagline:'s_tagline'
+  pickup_fee:'s_pickup_fee', per_mile_rate:'s_per_mile_rate',
+  max_passengers:'s_max_passengers', tagline:'s_tagline'
 };
 
 async function loadSettings() {

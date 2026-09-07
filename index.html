@@ -141,6 +141,17 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
 .footer-links a:hover{color:rgba(240,240,240,0.7)}
 .footer-copy{font-size:0.75rem;color:rgba(240,240,240,0.2);width:100%;text-align:center;padding-top:2rem;border-top:1px solid var(--border);margin-top:1rem}
 
+/* FULL-DAY SERVICES GRID */
+.fulldav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+@media(max-width:800px){.fulldav-grid{grid-template-columns:1fr}}
+.fdv-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color var(--transition)}
+.fdv-card:hover{border-color:rgba(200,169,110,0.35)}
+.fdv-card-img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.88)}
+.fdv-card-body{padding:1.4rem}
+.fdv-card-label{font-family:var(--font-display);font-size:1.4rem;letter-spacing:0.08em;color:#fff;margin-bottom:0.5rem}
+.fdv-card-text{font-size:0.82rem;color:var(--text-muted);line-height:1.75;margin-bottom:0.8rem}
+.fdv-contact-note{font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent)}
+
 @media (prefers-reduced-motion: reduce) {
   *,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important}
 }
@@ -188,7 +199,7 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
   <img src="Screenshot%202026-08-27%20213350.png" alt="SZN Sprinters black Mercedes Sprinter van" class="hero-img" id="heroImg" loading="eager">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-badge">Up to 12 Passengers · Private Group Transportation</div>
+    <div class="hero-badge">Up to 11 Passengers · Book 2 Days in Advance</div>
     <h1 class="hero-title" id="heroTitle">A DIFFERENT WORLD<em>OF GROUP TRAVEL.</em></h1>
     <p class="hero-sub" id="heroSub">Private group transportation for airport travel, business events, weddings, and winery experiences.</p>
     <div class="hero-actions" id="heroActions">
@@ -201,21 +212,21 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
 <!-- SERVICE TYPE CARDS (pricing overview — mirrors SuperShuttle layout) -->
 <div class="service-types" id="pricing">
   <div class="service-types-inner">
-    <div class="section-eyebrow">Simple, Transparent Rates</div>
-    <h2>CHOOSE YOUR SERVICE</h2>
-    <p class="service-types-lead">Keep your group together and choose from two types of service.</p>
+    <div class="section-eyebrow">Airport Transportation Rates</div>
+    <h2>TRANSPARENT PRICING</h2>
+    <p class="service-types-lead">Airport rides — two billing options. Winery, wedding &amp; corporate events — contact us for all-day pricing.</p>
     <div class="service-type-cards reveal">
       <div class="stc">
         <span class="stc-icon">⏱</span>
         <div class="stc-label">HOURLY SERVICE</div>
-        <div class="stc-price"><strong id="hourlyRate">$100</strong> / hour</div>
+        <div class="stc-price"><strong id="hourlyRate">$150</strong> / hour</div>
         <div class="stc-detail" id="hourlyMin">2-hour minimum</div>
       </div>
       <div class="stc">
         <span class="stc-icon">📍</span>
-        <div class="stc-label">PICKUP & DROP-OFF</div>
-        <div class="stc-price"><strong id="pickupFee">$40</strong> pickup fee</div>
-        <div class="stc-detail">+ <span id="perMile">$4</span> per mile</div>
+        <div class="stc-label">PICKUP &amp; DROP-OFF</div>
+        <div class="stc-price"><strong id="pickupFee">$50</strong> pickup fee</div>
+        <div class="stc-detail">+ <span id="perMile">$5</span> per mile</div>
       </div>
     </div>
   </div>
@@ -223,23 +234,23 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
 
 <hr class="section-divider">
 
-<!-- AIRPORT + BUSINESS (2 column, mirrors SuperShuttle) -->
+<!-- AIRPORT -->
 <section id="airport">
   <div class="section-inner">
     <div class="two-col reveal">
       <div>
         <div class="col-heading">AIRPORT TRANSPORTATION</div>
-        <p class="col-body">Traveling with a group through San Francisco National Airport? SZN Sprinters provides private group transportation for up to 12 passengers, booked in advance.</p>
-        <p class="col-body" style="font-size:0.85rem;color:var(--text-dim)"><!-- Update airport name if needed --></p>
+        <p class="col-body">Private group transportation to and from the Bay Area's major airports. Keep your group together — no shared rides, no strangers.</p>
+        <p class="col-body" style="font-size:0.88rem;color:var(--text-muted)">Serving: <strong style="color:#fff">SFO</strong> · San Francisco International &nbsp;·&nbsp; <strong style="color:#fff">OAK</strong> · Oakland International &nbsp;·&nbsp; <strong style="color:#fff">SJC</strong> · San Jose International</p>
         <ul class="col-list">
           <li>Private vehicle — no shared rides</li>
-          <li>Up to 12 passengers, one booking</li>
-          <li>Scheduled in advance</li>
-          <li>Pickup & drop-off or hourly service</li>
+          <li>Up to 11 passengers, one booking</li>
+          <li>Book at least 2 days in advance</li>
+          <li>Pickup &amp; drop-off or hourly service</li>
         </ul>
       </div>
       <div>
-        <img src="Screenshot%202026-08-27%20213829.png" alt="SZN Sprinters van rear view" class="col-image" loading="lazy">
+        <img src="SznSPrintersAirport.jpg" alt="SZN Sprinters airport transportation" class="col-image" loading="lazy">
       </div>
     </div>
   </div>
@@ -247,31 +258,48 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
 
 <hr class="section-divider">
 
-<!-- BUSINESS + CORPORATE -->
+<!-- FULL-DAY EXPERIENCES -->
 <section id="services">
   <div class="section-inner">
-    <div class="two-col reveal">
-      <div>
-        <img src="Screenshot%202026-08-27%20213617.png" alt="SZN Sprinters van front view" class="col-image" loading="lazy">
+    <div class="section-eyebrow" style="text-align:center;margin-bottom:0.6rem">Full-Day Experiences</div>
+    <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:0.07em;color:#fff;text-align:center;margin-bottom:0.5rem">WINERY · WEDDING · CORPORATE</h2>
+    <p style="color:var(--text-muted);font-size:0.9rem;text-align:center;margin-bottom:2.5rem">Private all-day transportation. Contact us for pricing.</p>
+    <div class="fulldav-grid reveal">
+      <div class="fdv-card">
+        <img src="SznSprintersCorporate.jpg" alt="Corporate group transportation" class="fdv-card-img" loading="lazy">
+        <div class="fdv-card-body">
+          <div class="fdv-card-label">CORPORATE</div>
+          <p class="fdv-card-text">Professional group transportation for business meetings, conferences, and corporate events. Your team arrives together, ready.</p>
+          <div class="fdv-contact-note">Contact for all-day pricing →</div>
+        </div>
       </div>
-      <div>
-        <div class="col-heading">BUSINESS & CORPORATE</div>
-        <p class="col-body">Keep your group together and arrive ready for the next meeting, event, or destination. SZN Sprinters handles the logistics so your team can focus on what matters.</p>
-        <ul class="col-list">
-          <li>Business meetings & conferences</li>
-          <li>Corporate event transportation</li>
-          <li>Professional group travel</li>
-          <li>On-time, private, distraction-free</li>
-        </ul>
+      <div class="fdv-card">
+        <img src="SznSprintersWedding.jpg" alt="Wedding transportation" class="fdv-card-img" loading="lazy">
+        <div class="fdv-card-body">
+          <div class="fdv-card-label">WEDDINGS</div>
+          <p class="fdv-card-text">Elegant private transportation for wedding parties and guests. Keep everyone together, on schedule, and comfortable all day.</p>
+          <div class="fdv-contact-note">Contact for all-day pricing →</div>
+        </div>
       </div>
+      <div class="fdv-card">
+        <img src="SznSprintersWinery.jpg" alt="Winery day trip transportation" class="fdv-card-img" loading="lazy">
+        <div class="fdv-card-body">
+          <div class="fdv-card-label">WINERY</div>
+          <p class="fdv-card-text">Private wine country day trips for your group. Arrive together, enjoy every stop, and return safely — all in one vehicle.</p>
+          <div class="fdv-contact-note">Contact for all-day pricing →</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2rem">
+      <a href="#contact" class="btn-outline">Contact Us for Pricing</a>
     </div>
   </div>
 </section>
 
 <!-- CAPACITY -->
 <div class="capacity reveal" id="about">
-  <span class="capacity-num" aria-hidden="true">12</span>
-  <div class="capacity-label">UP TO 12 PASSENGERS</div>
+  <span class="capacity-num" aria-hidden="true">11</span>
+  <div class="capacity-label">UP TO 11 PASSENGERS</div>
   <p class="capacity-sub">Private group transportation without splitting your party across multiple vehicles. Everyone travels together.</p>
 </div>
 
@@ -284,34 +312,6 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
     <p>One vehicle. One group. One seamless experience. SZN Sprinters is private group travel done differently.</p>
   </div>
 </div>
-
-<hr class="section-divider">
-
-<!-- WEDDINGS + WINERY -->
-<section>
-  <div class="section-inner">
-    <div class="two-col reveal">
-      <div>
-        <div class="col-heading">WEDDINGS</div>
-        <p class="col-body">Elegant private transportation for wedding parties and guests. Keep your most important guests comfortable, on schedule, and together throughout the day.</p>
-        <ul class="col-list">
-          <li>Ceremony & reception transfers</li>
-          <li>Entire wedding party, one vehicle</li>
-          <li>Private, relaxed, on your schedule</li>
-        </ul>
-      </div>
-      <div>
-        <div class="col-heading">WINERY EXPERIENCES</div>
-        <p class="col-body">Private group transportation for winery visits and wine country experiences. Arrive together, enjoy the experience, return safely — all in one private vehicle.</p>
-        <ul class="col-list">
-          <li>Wine country day trips</li>
-          <li>Private group reservations</li>
-          <li>Flexible pickup & return</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- FULL WIDTH — VAN SIDE VIEW -->
 <div class="full-img-section" style="height:50vh">
@@ -431,6 +431,11 @@ async function loadSettings() {
     if (s.hourly_minimum) document.getElementById('hourlyMin').textContent = s.hourly_minimum + '-hour minimum';
     if (s.pickup_fee) document.getElementById('pickupFee').textContent = '$' + s.pickup_fee;
     if (s.per_mile_rate) document.getElementById('perMile').textContent = '$' + s.per_mile_rate;
+    if (s.max_passengers) {
+      document.querySelectorAll('[id="heroSub"]').forEach(el => {
+        el.textContent = el.textContent.replace(/\d+ passengers/, s.max_passengers + ' passengers');
+      });
+    }
 
     // Contact
     if (s.phone) {
