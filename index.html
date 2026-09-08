@@ -142,8 +142,8 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
 .footer-copy{font-size:0.75rem;color:rgba(240,240,240,0.2);width:100%;text-align:center;padding-top:2rem;border-top:1px solid var(--border);margin-top:1rem}
 
 /* FULL-DAY SERVICES GRID */
-.fulldav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
-@media(max-width:800px){.fulldav-grid{grid-template-columns:1fr}}
+.fulldav-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem}
+@media(max-width:700px){.fulldav-grid{grid-template-columns:1fr}}
 .fdv-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color var(--transition)}
 .fdv-card:hover{border-color:rgba(200,169,110,0.35)}
 .fdv-card-img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.88)}
@@ -161,7 +161,9 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
   .two-col{grid-template-columns:1fr;gap:3rem}
   .service-type-cards{grid-template-columns:1fr;gap:0}
   nav{padding:0 1.2rem}
-  .hero-content{padding:0 1.2rem 4rem}
+  .hero-content{padding:0 1.2rem 3.5rem}
+  .hero-badge{font-size:0.62rem;letter-spacing:0.12em;padding:0.4rem 0.9rem;white-space:normal;text-align:center;border-radius:8px;max-width:100%}
+  .hero-title{font-size:clamp(3rem,11vw,5rem)}
   section{padding:4rem 1.2rem}
   .reserve,.capacity,.service-types{padding:3.5rem 1.2rem}
   .footer-inner{flex-direction:column;align-items:flex-start}
@@ -287,6 +289,14 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
           <div class="fdv-card-label">WINERY</div>
           <p class="fdv-card-text">Private wine country day trips for your group. Arrive together, enjoy every stop, and return safely — all in one vehicle.</p>
           <div class="fdv-contact-note">Contact for all-day pricing →</div>
+        </div>
+      </div>
+      <div class="fdv-card">
+        <img src="SznSPrintersAirport.jpg" alt="Sprinter van rental" class="fdv-card-img" loading="lazy" style="object-position:40% center">
+        <div class="fdv-card-body">
+          <div class="fdv-card-label">RENTAL</div>
+          <p class="fdv-card-text">Need the Sprinter for multiple days? Contact us to arrange a multi-day rental for your event, trip, or any occasion.</p>
+          <div class="fdv-contact-note">Contact for rental pricing →</div>
         </div>
       </div>
     </div>

@@ -178,6 +178,10 @@ input.invalid,select.invalid{border-color:var(--error)}
               <span class="svc-card-icon">🍷</span>
               <div class="svc-card-label">Winery<br>Experience</div>
             </div>
+            <div class="svc-card" data-value="Rental" tabindex="0" role="button" style="grid-column:1/-1">
+              <span class="svc-card-icon">🚐</span>
+              <div class="svc-card-label">Multi-Day Rental</div>
+            </div>
           </div>
           <input type="hidden" id="serviceType" value="Airport Transportation">
         </div>
@@ -197,23 +201,28 @@ input.invalid,select.invalid{border-color:var(--error)}
           </div>
           <input type="hidden" id="billingType" value="Hourly Service">
         </div>
-        <!-- Full-day contact note (winery/wedding/corporate) -->
+        <!-- Full-day / rental contact note -->
         <div class="form-group" id="fulldayNote" style="display:none;background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.22);border-radius:var(--radius-input);padding:1.2rem 1.4rem">
-          <div style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.35rem">All-Day Service</div>
-          <div style="font-size:0.85rem;color:rgba(240,240,240,0.7);line-height:1.6">This is a full-day experience. Pricing is custom — we'll contact you with a quote after you submit your request.</div>
+          <div style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.35rem" id="fulldayNoteTitle">All-Day Service</div>
+          <div style="font-size:0.85rem;color:rgba(240,240,240,0.7);line-height:1.6" id="fulldayNoteBody">Pricing is custom — we'll reach out with a quote after you submit.</div>
         </div>
 
         <!-- DATE & TIME -->
-        <div class="form-row">
+        <div class="form-row" id="dateRow">
           <div class="form-group">
-            <label for="rideDate">Date <span class="req">*</span></label>
+            <label for="rideDate" id="rideDateLabel">Date <span class="req">*</span></label>
             <input type="date" id="rideDate" required min="">
             <div class="field-error" id="dateErr">Please select a date.</div>
           </div>
-          <div class="form-group">
+          <div class="form-group" id="timeGroup">
             <label for="rideTime">Pickup Time</label>
             <input type="time" id="rideTime" min="06:00" max="22:00">
           </div>
+        </div>
+        <!-- Rental end date (rental service only) -->
+        <div class="form-group" id="rentalEndGroup" style="display:none">
+          <label for="rentalEndDate">Return Date <span class="req">*</span></label>
+          <input type="date" id="rentalEndDate" min="">
         </div>
 
         <!-- PASSENGERS -->
@@ -289,12 +298,22 @@ minDate.setDate(minDate.getDate() + 2);
 dateInput.min = minDate.toISOString().split('T')[0];
 
 // ── BILLING VISIBILITY ────────────────────────────────────
-const FULLDAY_SERVICES = ['Business / Corporate', 'Wedding', 'Winery Experience'];
+const FULLDAY_SERVICES = ['Business / Corporate', 'Wedding', 'Winery Experience', 'Rental'];
 function updateBillingVisibility(serviceValue) {
   const isFullDay = FULLDAY_SERVICES.includes(serviceValue);
+  const isRental = serviceValue === 'Rental';
   document.getElementById('billingSection').style.display = isFullDay ? 'none' : '';
   document.getElementById('fulldayNote').style.display = isFullDay ? '' : 'none';
-  if (isFullDay) document.getElementById('billingType').value = 'Full-Day (Contact for Pricing)';
+  document.getElementById('rentalEndGroup').style.display = isRental ? '' : 'none';
+  document.getElementById('timeGroup').style.display = isRental ? 'none' : '';
+  document.getElementById('rideDateLabel').innerHTML = isRental ? 'Rental Start Date <span class="req">*</span>' : 'Date <span class="req">*</span>';
+  if (isFullDay) {
+    document.getElementById('billingType').value = isRental ? 'Rental (Contact for Pricing)' : 'Full-Day (Contact for Pricing)';
+    document.getElementById('fulldayNoteTitle').textContent = isRental ? 'Multi-Day Rental' : 'All-Day Service';
+    document.getElementById('fulldayNoteBody').textContent = isRental
+      ? 'Select your start and return dates. We\'ll contact you with a rental quote.'
+      : 'Pricing is custom — we\'ll reach out with a quote after you submit.';
+  }
   else {
     const active = document.querySelector('[data-billing].active');
     document.getElementById('billingType').value = active ? active.dataset.billing : 'Hourly Service';
@@ -374,6 +393,12 @@ document.getElementById('bookingForm').addEventListener('submit', async (e) => {
   btn.disabled = true;
   btn.textContent = 'Sending...';
 
+  const rawNotes = document.getElementById('notes').value.trim();
+  const rentalEnd = document.getElementById('rentalEndDate').value;
+  const notesWithRental = rentalEnd
+    ? ('Return Date: ' + rentalEnd + (rawNotes ? '\n' + rawNotes : ''))
+    : (rawNotes || null);
+
   const payload = {
     name: document.getElementById('custName').value.trim(),
     email: document.getElementById('custEmail').value.trim().toLowerCase(),
@@ -385,7 +410,7 @@ document.getElementById('bookingForm').addEventListener('submit', async (e) => {
     pickup_location: document.getElementById('pickupLoc').value.trim() || null,
     destination: document.getElementById('destination').value.trim() || null,
     passengers: pax,
-    notes: document.getElementById('notes').value.trim() || null,
+    notes: notesWithRental,
     status: 'pending'
   };
 
