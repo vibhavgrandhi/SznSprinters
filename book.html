@@ -417,6 +417,12 @@ document.getElementById('bookingForm').addEventListener('submit', async (e) => {
   try {
     const { error } = await sb.from('bookings').insert(payload);
     if (error) throw error;
+    // Fire SMS notification — silent fail so booking always succeeds
+    fetch('/api/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
     document.getElementById('formWrapper').style.display = 'none';
     document.getElementById('successState').classList.add('show');
     window.scrollTo({ top: 0, behavior: 'smooth' });
