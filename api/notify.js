@@ -1,7 +1,4 @@
-const nodemailer = require('nodemailer');
-
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method !== 'POST') return res.status(405).end();
 
   const b = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
@@ -10,27 +7,26 @@ module.exports = async function handler(req, res) {
     'New SZN Booking!',
     'Name: '       + (b.name || '?'),
     'Service: '    + (b.service_type || '?'),
-    'Billing: '    + (b.billing_type || '?'),
     'Date: '       + (b.date || '?'),
     'Passengers: ' + (b.passengers || '?'),
     'Phone: '      + (b.phone || '?'),
     'Email: '      + (b.email || '?'),
     'Pickup: '     + (b.pickup_location || '—'),
     'Dest: '       + (b.destination || '—'),
+    'Billing: '    + (b.billing_type || '?'),
     'Notes: '      + (b.notes || '—'),
   ].join('\n');
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-  });
-
   try {
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: process.env.SZN_SMS_EMAIL,
-      subject: 'Booking: ' + (b.name || 'Unknown'),
-      text: msg,
+    await fetch('https://ntfy.sh/szn-bookings-5106103668', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain',
+        'Title': 'New SZN Booking!',
+        'Priority': 'high',
+        'Tags': 'van,calendar'
+      },
+      body: msg
     });
     res.status(200).json({ ok: true });
   } catch (err) {
