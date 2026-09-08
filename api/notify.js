@@ -1,3 +1,5 @@
+const https = require('https');
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
@@ -18,15 +20,27 @@ module.exports = async function handler(req, res) {
   ].join('\n');
 
   try {
-    await fetch('https://ntfy.sh/szn-bookings-5106103668', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'text/plain',
-        'Title': 'New SZN Booking!',
-        'Priority': 'high',
-        'Tags': 'van,calendar'
-      },
-      body: msg
+    await new Promise((resolve, reject) => {
+      const data = Buffer.from(msg, 'utf8');
+      const options = {
+        hostname: 'ntfy.sh',
+        path: '/szn-bookings-5106103668',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Title': 'New SZN Booking!',
+          'Priority': 'high',
+          'Tags': 'van,calendar',
+          'Content-Length': data.length
+        }
+      };
+      const request = https.request(options, (r) => {
+        r.resume();
+        r.on('end', resolve);
+      });
+      request.on('error', reject);
+      request.write(data);
+      request.end();
     });
     res.status(200).json({ ok: true });
   } catch (err) {
