@@ -342,10 +342,7 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
       <span class="contact-card-icon">📞</span>
       <span class="contact-card-text" id="phoneDisplay">—</span>
     </a>
-    <a href="#" class="contact-card" id="emailCard">
-      <span class="contact-card-icon">✉️</span>
-      <span class="contact-card-text" id="emailDisplay">—</span>
-    </a>
+
     <a href="https://www.instagram.com/sznsprinter/" target="_blank" rel="noopener" class="contact-card" style="border-color:rgba(200,169,110,0.4)">
       <span class="contact-card-icon">📷</span>
       <span class="contact-card-text">@sznsprinter — Follow on Instagram</span>
@@ -452,10 +449,7 @@ async function loadSettings() {
       document.getElementById('phoneDisplay').textContent = s.phone;
       document.getElementById('phoneCard').href = 'tel:' + s.phone.replace(/\D/g, '');
     }
-    if (s.email) {
-      document.getElementById('emailDisplay').textContent = s.email;
-      document.getElementById('emailCard').href = 'mailto:' + s.email;
-    }
+
     if (s.venmo) {
       document.getElementById('venmoDisplay').textContent = '@' + s.venmo;
       const vc = document.getElementById('venmoCard');
