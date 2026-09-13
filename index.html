@@ -144,12 +144,14 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
 /* FULL-DAY SERVICES GRID */
 .fulldav-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem}
 @media(max-width:700px){.fulldav-grid{grid-template-columns:1fr}}
-.fdv-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color var(--transition)}
+.fdv-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:relative;transition:border-color var(--transition)}
 .fdv-card:hover{border-color:rgba(200,169,110,0.35)}
 .fdv-card-img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.88)}
 .fdv-card-body{padding:1.4rem}
 .fdv-card-label{font-family:var(--font-display);font-size:1.4rem;letter-spacing:0.08em;color:#fff;margin-bottom:0.5rem}
 .fdv-card-text{font-size:0.82rem;color:var(--text-muted);line-height:1.75;margin-bottom:0.8rem}
+  .fdv-coming-soon{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;background:rgba(8,8,8,0.55)}
+  .fdv-coming-soon span{font-family:var(--font-display);font-size:1.15rem;letter-spacing:0.3em;text-indent:0.3em;color:#0e0e0e;background:var(--accent);padding:0.65rem 1.5rem;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,0.45)}
 .fdv-contact-note{font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent)}
 
 @media (max-height:780px) {
@@ -275,8 +277,9 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
     <div class="fulldav-grid reveal">
       <div class="fdv-card">
         <img src="SznSprintersCorporate.jpg" alt="Corporate group transportation" class="fdv-card-img" loading="lazy">
+        <div class="fdv-coming-soon"><span>COMING SOON</span></div>
         <div class="fdv-card-body">
-          <div class="fdv-card-label">CORPORATE</div>
+                    <div class="fdv-card-label">CORPORATE</div>
           <p class="fdv-card-text">Professional group transportation for business meetings, conferences, and corporate events. Your team arrives together, ready.</p>
           <div class="fdv-contact-note">Contact for all-day pricing →</div>
         </div>
@@ -291,7 +294,8 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
       </div>
       <div class="fdv-card">
         <img src="SznSprintersWinery.jpg" alt="Winery day trip transportation" class="fdv-card-img" loading="lazy">
-        <div class="fdv-card-body">
+        <div class="fdv-coming-soon"><span>COMING SOON</span></div>
+                <div class="fdv-card-body">
           <div class="fdv-card-label">WINERY</div>
           <p class="fdv-card-text">Private wine country day trips for your group. Arrive together, enjoy every stop, and return safely — all in one vehicle.</p>
           <div class="fdv-contact-note">Contact for all-day pricing →</div>
