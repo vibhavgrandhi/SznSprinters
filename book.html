@@ -189,17 +189,22 @@ input.invalid,select.invalid{border-color:var(--error)}
         <!-- BILLING TYPE (airport only) -->
         <div class="form-group" id="billingSection">
           <label>How would you like to be billed? <span class="req">*</span></label>
-          <div class="service-select-grid" style="grid-template-columns:1fr 1fr">
+          <div class="service-select-grid" style="grid-template-columns:1fr 1fr 1fr">
             <div class="svc-card active" data-billing="Hourly Service" tabindex="0" role="button" id="billingHourly">
               <span class="svc-card-icon">⏱</span>
               <div class="svc-card-label">Hourly Service<br><span style="color:var(--accent);font-size:0.7rem" id="hourlyLabel">$150/hr · 2hr min</span></div>
             </div>
-            <div class="svc-card" data-billing="Pickup & Drop-Off" tabindex="0" role="button" id="billingPickup">
+            <div class="svc-card" data-billing="Airport Pickup or Drop-Off" tabindex="0" role="button" id="billingPickup">
               <span class="svc-card-icon">📍</span>
-              <div class="svc-card-label">Pickup &amp; Drop-Off<br><span style="color:var(--accent);font-size:0.7rem" id="pickupLabel">$50 + $5/mi</span></div>
+              <div class="svc-card-label">Airport Pickup or Drop-Off<br><span style="color:var(--accent);font-size:0.7rem" id="pickupLabel">East Bay to SFO $175 8-11PM, after hours $225</span></div>
+              
             </div>
           </div>
-          <input type="hidden" id="billingType" value="Hourly Service">
+          <div class="svc-card" data-billing="Daily Rental" tabindex="0" role="button" id="billingDaily">
+              <span class="svc-card-icon">📅</span>
+              <div class="svc-card-label">Daily Rental<br><span style="color:var(--accent);font-size:0.7rem">Friends and Family only $200</span></div>
+            </div>
+            <input type="hidden" id="billingType" value="Hourly Service">
         </div>
         <!-- Full-day / rental contact note -->
         <div class="form-group" id="fulldayNote" style="display:none;background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.22);border-radius:var(--radius-input);padding:1.2rem 1.4rem">
@@ -442,7 +447,7 @@ async function loadPricing() {
     const s = Object.fromEntries(data.map(r => [r.key, r.value]));
     if (s.hourly_rate && s.hourly_minimum) document.getElementById('hourlyLabel').textContent = '$' + s.hourly_rate + '/hr · ' + s.hourly_minimum + 'hr min';
     else if (s.hourly_rate) document.getElementById('hourlyLabel').textContent = '$' + s.hourly_rate + '/hr · 2hr min';
-    if (s.pickup_fee && s.per_mile_rate) document.getElementById('pickupLabel').textContent = '$' + s.pickup_fee + ' + $' + s.per_mile_rate + '/mi';
+    
     if (s.max_passengers) {
       maxPax = parseInt(s.max_passengers) || 11;
       if (pax > maxPax) { pax = maxPax; document.getElementById('paxCount').value = pax; }
