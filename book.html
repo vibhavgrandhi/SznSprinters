@@ -183,7 +183,25 @@ input.invalid,select.invalid{border-color:var(--error)}
               <div class="svc-card-label">Multi-Day Rental</div>
             </div>
           </div>
-          <input type="hidden" id="serviceType" value="Airport Transportation">
+          <input type="hidden" id="serviceType" value="Airport Transportation">        <!-- BILLING TYPE (airport only) -->
+        <div class="form-group" id="billingSection">
+          <label>How would you like to be billed? <span class="req">*</span></label>
+          <div class="service-select-grid" style="grid-template-columns:1fr 1fr 1fr">
+            <div class="svc-card active" data-billing="Hourly Service" tabindex="0" role="button" id="billingHourly">
+              <span class="svc-card-icon">⏱</span>
+              <div class="svc-card-label">Hourly Service<br><span style="color:var(--accent);font-size:0.7rem" id="hourlyLabel">$150/hr · 2hr min</span></div>
+            </div>
+            <div class="svc-card" data-billing="Airport Pickup or Drop-Off" tabindex="0" role="button" id="billingPickup">
+              <span class="svc-card-icon">📍</span>
+              <div class="svc-card-label">Airport Pickup or Drop-Off<br><span style="color:var(--accent);font-size:0.7rem" id="pickupLabel">East Bay to SFO $175 8-11PM, after hours $225</span></div>
+            </div>
+            <div class="svc-card" data-billing="Daily Rental" tabindex="0" role="button" id="billingDaily">
+              <span class="svc-card-icon">📅</span>
+              <div class="svc-card-label">Daily Rental<br><span style="color:var(--accent);font-size:0.7rem">Friends and Family only $200</span></div>
+            </div>
+          </div>
+          <input type="hidden" id="billingType" value="Hourly Service">
+        </div>
         </div>
 
         <!-- BILLING TYPE (airport only) -->
