@@ -51,7 +51,7 @@ nav.scrolled{background:rgba(8,8,8,0.97);backdrop-filter:blur(12px);border-botto
 .mobile-menu .m-cta{background:var(--accent);color:#080808;font-size:1rem;font-weight:600;letter-spacing:0.14em;padding:0.9rem 2.5rem;border-radius:var(--radius);margin-top:1rem}
 
 /* HERO */
-.hero{height:100vh;min-height:620px;position:relative;display:flex;align-items:flex-end;overflow:hidden}
+.hero{height:100vh;height:100dvh;min-height:620px;position:relative;display:flex;align-items:flex-end;overflow:hidden}
 .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.05);transition:transform 8s ease}
 .hero-img.loaded{transform:scale(1)}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,0.72) 35%,rgba(8,8,8,0.3) 70%,rgba(8,8,8,0.1) 100%)}
@@ -152,6 +152,12 @@ footer{background:#050505;border-top:1px solid var(--border);padding:3rem 2.5rem
 .fdv-card-text{font-size:0.82rem;color:var(--text-muted);line-height:1.75;margin-bottom:0.8rem}
 .fdv-contact-note{font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent)}
 
+@media (max-height:780px) {
+  .hero-title{font-size:clamp(2.8rem,7vw,5.5rem)}
+  .hero-content{padding-bottom:3rem}
+  .hero-badge{margin-bottom:1rem}
+  .hero-sub{margin-bottom:1.5rem}
+}
 @media (prefers-reduced-motion: reduce) {
   *,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important}
 }
